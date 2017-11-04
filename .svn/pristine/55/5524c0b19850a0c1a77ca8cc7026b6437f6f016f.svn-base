@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<% String cp = request.getContextPath();  %>
+<script type="text/javascript">
+	function del_chk(){
+		var chk = document.getElementById("commentDel");
+		chk.method = "post";
+		chk.action = "<%=cp %>/magazine/commentDelete.mt";
+		chk.submit();
+	}
+</script>
+</head>
+<div class="admin_grp">
+	<div class="admin_list">
+		<ul>
+			<li><a href="<%=cp%>/admin/movieList.mt">상영작</a></li>
+			<li><a href="<%=cp%>/admin/timeTableList.mt">시간표관리</a></li>
+			<li><a href="<%=cp%>/admin/adminMagazineList.mt">매거진</a></li>
+			<li><a href="<%=cp%>/admin/adminEventList.mt">이벤트</a></li>
+			<li><a href="<%=cp%>/admin/adminNoticeList.mt">공지사항</a></li>
+			<li class="on"><a href="<%=cp %>/admin/adminQnaList.mt">Q&amp;A</a></li>
+			<li><a href="<%=cp%>/admin/memberList.mt">회원정보</a></li>
+		</ul>
+	</div>
+
+	<div class="admin_ct">
+		<h3 class="sub_tit">Q&amp;A Delete</h3>
+		<form action="#none" method="post">
+			<div class="tbl_type_01">
+				<table>
+					<caption>번호,제목,글쓴이,날짜,조회를 나타내는 공지사항 표</caption>
+					<colgroup>
+						<col style="width: 120px;" />
+						<col />
+					</colgroup>
+					<tbody>
+						<tr>
+							<th scope="row">비밀번호</th>
+							<td>
+								<input type="text" class="txt w100" name="passwd" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="btn_type_03">
+				<a href="<%=cp%>/admin/adminQnaList.mt" class="btn btnC_03 btnP_04 mr10">
+					<span>취소</span>
+				</a> 
+				<span class="btn btnC_04 btnP_04"> 
+					<input type="submit"  value="삭제" onclick="del_chk()"/>
+				</span>
+			</div>
+		</form>
+	</div>
+</div>

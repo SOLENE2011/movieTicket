@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qna">
+	<resultMap type="qnaModel"  id="qnaModelRes">
+		<result property="qna_no" column="qna_no" />
+		<result property="subject" column="subject" />
+		<result property="name" column="name" />
+		<result property="passwd" column="passwd" />
+		<result property="content" column="content" />
+		<result property="readhit" column="readhit" />
+		<result property="reg_date" column="reg_date" />
+		<result property="ref" column="ref" />
+		<result property="re_step" column="re_step" />
+	<!-- 	<result property="re_level" column="re_level" /> -->
+	</resultMap>
+	
+	<!-- 글목록	--> 
+	<select id="qnaList" resultMap="qnaModelRes">
+		<!-- SELECT * FROM QNA ORDER BY QNA_NO DESC -->
+		SELECT * FROM QNA ORDER BY ref DESC, re_step ASC
+	</select>
+
+
+	<!-- 글쓰기 -->
+	<insert id="qnaWrite" parameterType="qnaModel">
+		insert into QNA values(QNA_NO_SEQ.NEXTVAL, #{subject}, #{name}, #{passwd}, #{content}, #{readhit}, sysdate, QNA_NO_SEQ.CURRVAL, #{re_step})	
+	</insert>
+	
+	<!-- 글 상세보기 -->
+	<select id="qnaView" resultMap="qnaModelRes" parameterType="Integer">
+			SELECT * FROM QNA WHERE QNA_NO = #{qna_no}
+	</select>
+	
+<!-- 	<select id="qnaView2" parameterType="int" resultMap="qnaModelRes"> 
+		select *
+		from qna
+		WHERE QNA_NO = #{qna_no}
+</select>
+	 -->
+	
+	<!-- 조회수 1증가 -->
+	<update id="qnaUpdateReadhit" parameterType="Integer">
+		UPDATE QNA SET READHIT=READHIT+1 WHERE QNA_NO=#{QNA_NO}
+	</update>
+	
+	<!-- 글삭제 -->
+	<delete id="qnaDelete" parameterType="Integer">
+			DELETE FROM QNA WHERE QNA_NO = #{qna_no}
+	</delete>
+	
+	<!-- 글수정 -->
+	<update id="qnaModify" parameterType="qnaModel">
+			UPDATE QNA	SET NAME = #{name}, SUBJECT = #{subject}, 	CONTENT = #{content} WHERE QNA_NO = #{qna_no}	
+	</update>
+	
+	<!-- 답변글쓰기 -->
+	<insert id="qnaWriteReply" parameterType="Integer">
+			INSERT INTO QNA
+			(QNA_NO, SUBJECT, PASSWD, CONTENT, REG_DATE, NAME, REF, RE_STEP)
+			VALUES
+			(QNA_NO_SEQ.NEXTVAL, #{subject}, #{passwd}, #{content}, SYSDATE, #{name}, #{ref}, #{re_step})
+	</insert>
+	
+	<!-- 제목검색 -->
+	<select id="qnaSearch0" resultMap="qnaModelRes" parameterType="String">
+		SELECT * FROM QNA
+		 WHERE subject like #{search}
+		 ORDER BY ref DESC, re_step ASC
+	</select>
+	
+	<!-- 내용검색 -->
+	<select id="qnaSearch1" resultMap="qnaModelRes" parameterType="String">
+		SELECT * FROM QNA
+		WHERE content like #{search}
+		ORDER BY ref DESC, re_step ASC
+	</select>
+
+	<!-- 작성자검색 -->
+	<select id="qnaSearch2" resultMap="qnaModelRes" parameterType="String">
+		SELECT * FROM QNA
+		WHERE name like #{search}
+		ORDER BY ref DESC, re_step ASC
+	</select>
+</mapper>

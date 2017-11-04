@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movie">
+
+	<resultMap id="movieRes" type="movieModel">
+		<result property="movie_no" column="movie_no" />
+		<result property="movie_name" column="movie_name" />
+		<result property="director" column="director" />
+		<result property="actor" column="actor" />
+		<result property="show_date" column="show_date" />
+		<result property="story" column="story" />
+		<result property="poster" column="poster" />
+		<result property="cut1" column="cut1" />
+		<result property="cut2" column="cut2" />
+		<result property="cut3" column="cut3" />
+		<result property="reg_date" column="reg_date" />
+		<result property="summary" column="summary" />
+		<result property="movie_age_grade" column="movie_delete" />
+		<result property="movie_score" column="movie_score" />
+		<result property="moviescore_people" column="moviescore_people" />
+	</resultMap>
+	
+	<resultMap type="movieGradeModel" id="gradeRes">
+		<result property="movie_no" column="movie_no" />
+		<result property="member_no" column="member_no" />
+	</resultMap>
+
+	<sql id="select-allmv">
+		select * from movie
+	</sql>
+
+	<!-- 공통으로 사용할 where-no 절 정의 -->
+	<sql id="where-nomv">
+		where movie_no = #{movie_no}
+	</sql>
+
+	<!-- 상영할 영화 등록하기 -->
+	<insert id="movieWrite" parameterType="movieModel">
+		insert into movie values (
+		#{movie_no},
+		#{movie_name},
+		#{director},
+		#{actor},
+		#{show_date},
+		#{story},
+		#{poster},
+		#{cut1},
+		#{cut2},
+		#{cut3},
+		sysdate,
+		#{summary},
+		#{movie_age_grade},
+		#{movie_score},
+		#{moviescore_people} )
+	</insert>
+
+	<select id="getMovie_NO_SEQ" resultType="int">
+		select
+		magazine_no_seq.nextval from dual
+	</select>
+
+	<select id="selectMovie_ALL" resultMap="movieRes">
+		select * from MOVIE order
+		by movie_no DESC
+	</select>
+
+	<select id="selectMovie_one" resultMap="movieRes" parameterType="int">
+		select * from MOVIE where movie_no = #{movie_no}
+	</select>
+
+	<update id="movieUpdate" parameterType="movieModel">
+		update movie set 
+		MOVIE_NAME=#{movie_name},
+		DIRECTOR=#{director},
+		ACTOR=#{actor},
+		SHOW_DATE=#{show_date},
+		STORY=#{story},
+		POSTER=#{poster},
+		CUT1=#{cut1},
+		CUT2=#{cut2},
+		CUT3=#{cut3},
+		SUMMARY=#{summary} 
+		where MOVIE_NO = #{movie_no}
+	</update>
+
+	<delete id="movieDelete" parameterType="int">
+		delete from MOVIE where
+		movie_no = #{no}
+	</delete>
+	
+	<!-- 영화평점 주기 -->
+	<update id="updateMovieScore" parameterType="movieModel">
+		update movie set movie_score = round((movie_score*moviescore_people + #{movie_score} )/(moviescore_people + 1), 2), moviescore_people=moviescore_people+1
+		where movie_no = #{movie_no}
+	</update>
+	
+	<!-- 평점입력 중복체크 정보 가져오기 -->
+	<select id="gradecheck" parameterType="movieGradeModel" resultMap="gradeRes">
+		select member_no from MOVIE_GRADE 
+		where movie_no = #{movie_no} and member_no = #{member_no}
+	</select>
+	
+	<!-- 평점입력 중복체크 위해 데이터입력 -->
+	<insert id="insertgradecheck" parameterType="movieGradeModel">
+		insert into MOVIE_GRADE (movie_no, member_no)
+		values (#{movie_no}, #{member_no})
+	</insert>
+
+</mapper>

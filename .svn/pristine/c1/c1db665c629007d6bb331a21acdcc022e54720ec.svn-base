@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>M-Ticket</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="../../css/import.css" />
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="logo">
+			<h1><a href="../index.html">M-Ticket</a></h1>
+		</div>
+	</div><!-- // header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="tac" style="width:400px;margin:auto;">
+			<form action="#none" method="post" name="" >
+				<fieldset>
+					<legend>로그인</legend>
+					<div class="login_box">
+						<div class="inner">
+							<div class="input_box">
+								<label for="id" class="lbl_txt">ID</label>
+								<input type="text" class="txt" id="id" name="" placeholder="ID" />
+							</div>
+							<div class="input_box">
+								<label for="pw" class="lbl_txt">PW</label>
+								<input type="password" class="txt" id="pw" name="" placeholder="PW" />
+							</div>
+							<input type="button" value="로그인" class="btn_login" />
+						</div>
+					</div>
+					<div class="login_btm">
+						<ul>
+							<li class="m1"><a href="member_01.html">회원가입</a></li>
+							<li class="m2">
+								<a href="member/search_id.html">아이디</a>
+								<span class="slash"> &#47; </span>
+								<a href="member/search_pw.html">비밀번호 찾기</a>
+							</li>
+						</ul>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div><!-- // container -->
+
+	<!-- footer -->
+	<div id="footer">
+		<div class="ft_ct">
+			<div class="inner">
+				<h1>M-Ticket</h1>
+				<div class="ft_list">
+					<ul>
+						<li><a href="#none">공지사항</a></li>
+						<li><a href="#none">FAQ</a></li>
+						<li><a href="#none">이용약관</a></li>
+						<li><a href="#none">개인정보취급방침</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="address">
+				<p>강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F  |  강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 5F, 7F  |  종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F 이태원지원 : 서울특별시 용산구 보광로 73 한국폴리텍제1대학  |  울산지원 : 울산광역시 남구 신정2동 1640-6번지 현대스포츠센터2F</p>
+				<p class="copy">COPYRIGHT© LOTTE CINEMA ALL RIGHT RESERVED.</p>
+			</div>
+		</div>
+	</div><!-- // footer -->
+</div>
+</body>
+</html>

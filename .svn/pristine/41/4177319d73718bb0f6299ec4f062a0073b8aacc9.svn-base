@@ -1,0 +1,482 @@
+package com.hotsix.mypage;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.hotsix.common.Paging;
+import com.hotsix.member.MemberModel;
+import com.hotsix.member.MemberService;
+import com.hotsix.movie.MovieModel;
+import com.hotsix.movie.MovieService;
+import com.hotsix.mypage.MypageService;
+
+@Controller
+@RequestMapping("/mypage")
+public class MypageController {
+
+	ModelAndView mav = new ModelAndView();
+
+	@Resource
+	private MemberService memberService;
+
+	private int currentPage = 1;
+	private int totalCount;    
+	private int blockCount = 10;  
+	private int blockPage = 5;  
+	private String pagingHtml; 
+	private Paging page;   
+	private Integer session_member_no;
+	private Calendar today = Calendar.getInstance();
+	
+	@Resource
+	private MypageService mypageService;
+	
+	@Resource
+	private MovieService movieService;
+	
+	// 회원정보 수정
+	@RequestMapping("/memberModify.mt")
+	public ModelAndView memberModify(@ModelAttribute("member") MemberModel member, BindingResult result,
+			HttpSession session) {
+
+		session.getAttribute("session_member_id");
+
+		if (session.getAttribute("session_member_id") != null) {
+			String id = (String) session.getAttribute("session_member_id");
+			member = memberService.getMember(id);
+
+			mav.addObject("member", member);
+			mav.setViewName("memberModify");
+			return mav;
+		} else {
+			mav.setViewName("common/loginConfirm");
+			return mav;
+		}
+	}
+
+
+	/**
+	 * 
+	 * @param request
+	 * @param session
+	 * @return 
+	 * 
+	 * 예매내역 리스트를 처리하는 컨트롤러
+	 */
+	@RequestMapping("/reserveList.mt")
+	public ModelAndView reserveList(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+
+		session_member_no = (Integer) session.getAttribute("session_member_no");
+
+		if (session_member_no == null) {
+			mav.setViewName("reserve/loginConfirm");
+			return mav;
+		}
+		
+		if(request.getParameter("currentPage") == null || request.getParameter("currentPage").trim().isEmpty() || request.getParameter("currentPage").equals("0")) {
+            currentPage = 1;
+        } else {
+            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        }
+		
+		List<MypageModel> list;		
+		list = mypageService.reserveList(session_member_no);
+		System.out.println(totalCount);
+		
+		
+		totalCount = list.size();
+		
+		page = new Paging(currentPage, totalCount, blockCount, blockPage, "reserveList");
+		pagingHtml = page.getPagingHtml().toString();
+		
+		int lastCount = totalCount;
+		
+		if(page.getEndCount() < totalCount)
+			lastCount = page.getEndCount() + 1;
+		
+		list = list.subList(page.getStartCount(), lastCount);
+		
+		mv.addObject("list", list);
+		mv.addObject("currentPage", currentPage);
+        mv.addObject("pagingHtml", pagingHtml);
+        mv.addObject("totalCount", totalCount);
+		mv.setViewName("reserveList");
+		return mv;
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param session
+	 * @return
+	 * 
+	 * 예매 취소내역을 처리하는 컨트롤러
+	 */
+		@RequestMapping("/cancelList.mt")
+		public ModelAndView cancelList(HttpServletRequest request, HttpSession session) {
+			ModelAndView mv = new ModelAndView();
+
+			session_member_no = (Integer) session.getAttribute("session_member_no");
+
+			if (session_member_no == null) {
+				mav.setViewName("reserve/loginConfirm");
+				return mav;
+			}
+			
+			
+			if(request.getParameter("currentPage") == null || request.getParameter("currentPage").trim().isEmpty() || request.getParameter("currentPage").equals("0")) {
+	            currentPage = 1;
+	        } else {
+	            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	        }
+			
+
+			List<MypageModel> list;	
+			list = mypageService.cancelList(session_member_no);
+			
+			totalCount = list.size();
+			
+			page = new Paging(currentPage, totalCount, blockCount, blockPage, "cancelList");
+			pagingHtml = page.getPagingHtml().toString();
+			
+			int lastCount = totalCount;
+			
+			if(page.getEndCount() < totalCount)
+				lastCount = page.getEndCount() + 1;
+			
+			list = list.subList(page.getStartCount(), lastCount);
+			
+			mv.addObject("list", list);
+			mv.addObject("currentPage", currentPage);
+	        mv.addObject("pagingHtml", pagingHtml);
+	        mv.addObject("totalCount", totalCount);
+			mv.setViewName("cancelList");
+			return mv;
+		}
+		
+	//M_COIN
+	@RequestMapping("/mcoinPage.mt")
+	public ModelAndView mcoinPage(@ModelAttribute("member") MemberModel member, HttpServletRequest request, HttpSession session){
+		
+		mav = new ModelAndView();
+		
+		if (session.getAttribute("session_member_id") == null){
+			mav.setViewName("reserve/loginConfirm");
+			return mav;
+		}
+		//
+		int num = (int)session.getAttribute("session_member_no");
+		System.out.println(num);
+		member = mypageService.getMemberModel(num);
+		
+		//System.out.println(member.getMticket_coin() + " 잔여코인");
+		//System.out.println(member.getAdult_ticket() + " 성인");
+		//System.out.println(member.getChild_ticket() + " 어린이");
+		
+		
+		mav.addObject("member", member);
+		mav.setViewName("mcoinPage");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/mcoinPageSuccess.mt", method=RequestMethod.POST)
+	public ModelAndView mcoinPageSuccess(@ModelAttribute("member") MemberModel member, BindingResult result, 
+			HttpServletRequest request, HttpSession session){
+		
+		session.getAttribute("session_member_no");
+		Integer member_no = (Integer)session.getAttribute("session_member_no");
+		
+		MemberModel memberModel = new MemberModel();
+		memberModel = mypageService.getMemberModel(member_no);
+		int mticket_coin, adult_ticket, child_ticket;
+		
+		adult_ticket = Integer.parseInt(request.getParameter("adult_ticket"));
+		child_ticket = Integer.parseInt(request.getParameter("child_ticket"));
+		
+		mticket_coin = adult_ticket * 10000 + child_ticket * 7000;
+		//System.out.println(mticket_coin + "코인");
+		
+		if(mticket_coin > memberModel.getMticket_coin()){
+			mav.setViewName("mypage/mticketNO");
+			System.out.println(member.getMticket_coin());
+			return mav;
+		} else {
+			memberModel.setMticket_coin(mticket_coin);
+			memberModel.setAdult_ticket(adult_ticket);
+			memberModel.setChild_ticket(child_ticket);
+			mypageService.updateMticket(memberModel);
+			
+			mav.setViewName("mypage/mticketYES");
+			
+			return mav;
+		}
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * 
+	 * 예매 내역 리스트, 예매 상세보기에서 예매취소를 누를 시 작동하는 컨트롤러
+	 * <p> reserveList.mt 로 리다이렉트
+	 */
+	@RequestMapping("/cancelReserve.mt")
+	public ModelAndView cancelReserve(HttpServletRequest request) {
+		
+		if(request.getParameter("reserve_no") != null) {
+			MypageModel mypageModel = new MypageModel();
+			
+			mypageModel.setReserve_master_no(request.getParameter("reserve_no"));
+			mypageModel.setCancel_date(today.getTime());
+			//System.out.println(request.getParameter("reserve_no"));
+			mypageService.cancelReserve(mypageModel);
+			mypageService.cancelReserve2(mypageModel);
+						
+			List<MypageModel> list;		
+			list = mypageService.reserveList(session_member_no);
+			
+			if(list.equals("reserve_no")){
+				return mav;
+			}
+		}
+		mav.setViewName("redirect:reserveList.mt");
+		return mav;
+	}
+	
+	
+	/**
+	 * 
+	 * @param request
+	 * @param session
+	 * @return
+	 * 
+	 * 
+	 */
+	@RequestMapping(value="/wishList_Check.mt",method=RequestMethod.GET)
+	public ModelAndView wishList_Check(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		int rollback = 0;
+		
+		int movie_no = Integer.parseInt(request.getParameter("movie_no"));
+		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		
+		session_member_no = (Integer) session.getAttribute("session_member_no");
+		
+		//System.out.println("세션값 : "+session_member_no);
+		
+		if(session_member_no == null){
+			rollback = 1;
+		}else{
+			rollback = 0;
+		}
+		
+		mv.addObject("currentPage",currentPage);
+		mv.addObject("movie_no",movie_no);
+		mv.addObject("rollback",rollback);
+		mv.setViewName("/mypage/wishList_Check");
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="/wishList_Success.mt")
+	public ModelAndView wishList_Success(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		
+		int movie_no = Integer.parseInt(request.getParameter("movie_no"));
+		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		int gomypage = Integer.parseInt(request.getParameter("gomypage"));
+		session_member_no = (Integer) session.getAttribute("session_member_no");
+		
+		
+		WishlistModel wishlistModel = new WishlistModel();
+		
+		wishlistModel.setMember_no(session_member_no);
+		wishlistModel.setMovie_no(movie_no);
+		
+		//위시리스트에 중복값이 있는지 체크
+		WishlistModel_2 wishlistModel2 = new WishlistModel_2();
+		wishlistModel2.setMember_no(wishlistModel.getMember_no());
+		wishlistModel2.setMovie_no(wishlistModel.getMovie_no());
+		
+		List<WishlistModel_2> list;
+		
+		list = mypageService.selectWishlistCheck(wishlistModel2);
+		
+		if(list.size() != 0){
+			//System.out.println("이미 위시리스트에 들어있습니다.");
+			mv.addObject("movie_no",movie_no);
+			mv.addObject("currentPage",currentPage);
+			mv.setViewName("/mypage/wish_overlab");
+			return mv;
+		}else{
+			//System.out.println("위시리스트에 없던 영화입니다.");
+			mypageService.addWishlist(wishlistModel);
+		}
+		
+		
+		
+		
+		if(gomypage == 1){
+			//System.out.println("마이페이지 이동");
+			mv.setViewName("redirect:/mypage/wishList.mt");
+		}else{
+			//System.out.println("상영작페이지로 남음");
+			mv.setViewName("redirect:/movie/movieView.mt?movie_no="+movie_no+"&currentPage="+currentPage);
+		}
+		
+		
+		return mv;
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param session
+	 * @return
+	 * 
+	 * 위시리스트를 처리해주는 컨트롤러
+	 */
+	
+	@RequestMapping(value="/wishList.mt", method=RequestMethod.GET)
+	public ModelAndView wishList(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		session_member_no = (Integer) session.getAttribute("session_member_no");
+		
+		if(request.getParameter("currentPage") == null || request.getParameter("currentPage").trim().isEmpty() || request.getParameter("currentPage").equals("0")) {
+            currentPage = 1;
+        } else {
+            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        }
+		
+		List<WishlistModel> list;
+		list = mypageService.selectWishlist(session_member_no);
+		
+		totalCount = list.size();
+		
+		page = new Paging(currentPage, totalCount, blockCount, blockPage, "wishList");
+		pagingHtml = page.getPagingHtml().toString();
+		
+		int lastCount = totalCount;
+		
+		if(page.getEndCount() < totalCount)
+			lastCount = page.getEndCount() + 1;
+		
+		list = list.subList(page.getStartCount(), lastCount);
+		
+		
+		//System.out.println(list.size());
+		
+		mv.addObject("currentPage", currentPage);
+		mv.addObject("pagingHtml", pagingHtml);
+		mv.addObject("list", list);
+        mv.addObject("totalCount", totalCount);
+		mv.setViewName("wishList");
+		
+		return mv;
+	}
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * 
+	 * 위시리스트 상세보기를 처리해주는 컨트롤러
+	 */
+	@RequestMapping("/wishView.mt")
+	public ModelAndView movieView(HttpServletRequest request){
+		
+		Integer movie_no = Integer.parseInt(request.getParameter("movie_no"));
+		MovieModel movie = movieService.movieList_one_(movie_no);
+		
+		mav.addObject("movie", movie);
+		mav.setViewName("wishView"); 
+		return mav;
+	}
+	/**
+	 * 
+	 * @param request
+	 * @param wishlistModel
+	 * @param session
+	 * @return
+	 * 
+	 * 위시리스트 삭제를 처리해주는 컨트롤러
+	 */
+	@RequestMapping(value="/delWishList.mt")
+	public ModelAndView delWishlist(HttpServletRequest request, WishlistModel wishlistModel, HttpSession session) {
+		
+		Integer member_no;
+		member_no = (Integer)session.getAttribute("session_member_no");
+		
+		wishlistModel.setMember_no(member_no);
+		wishlistModel.setMovie_no(Integer.parseInt(request.getParameter("movie_no")));
+		
+		mypageService.deleteWishlist(wishlistModel);
+		
+		mav.addObject("wishlist", wishlistModel);
+		mav.setViewName("redirect:/mypage/wishList.mt");
+		return mav;
+	}
+	
+
+	/**
+	 * 
+	 * @param request
+	 * @param session
+	 * @return
+	 * 
+	 * 예매내역 상세보기를 처리해주는 컨트롤러
+	 */
+	@RequestMapping(value="/reserveView.mt")
+	public ModelAndView reserveView(HttpServletRequest request,HttpSession session){
+		
+		String reserve_master_no = request.getParameter("reserve_master_no");
+		session_member_no = (Integer) session.getAttribute("session_member_no");
+		
+		MypageModel2 mypageModel2 = new MypageModel2();
+		
+		mypageModel2.setReserve_master_no(reserve_master_no);
+		mypageModel2.setMember_no(session_member_no.toString());
+		
+		mypageModel2 = mypageService.selectReserveView(mypageModel2);
+		String[] str = mypageModel2.getShow_date().split(" ");
+		
+		mypageModel2.setShow_date(str[0]);
+		mypageModel2.setStart_time(str[1]);
+		
+		MypageModel3 mypageModel3 = new MypageModel3();
+		//mypageModel3 = mypageService.reserveList_ACT(Long.parseLong(reserve_master_no));
+		
+		/*
+		System.out.println("넘버 "+reserve_master_no);
+		System.out.println("이름 "+mypageModel2.getMovie_name());
+		System.out.println("상영관번호"+mypageModel2.getRoom_name());
+		System.out.println("어른 수 "+mypageModel3.getAdult());
+		System.out.println("아이 수"+mypageModel3.getChild());
+		System.out.println("총가격 "+mypageModel3.getTotal_amount());
+		System.out.println("개봉일 "+mypageModel2.getShow_date());
+		System.out.println("시작시간 "+mypageModel2.getStart_time());
+		System.out.println("취소날짜 "+mypageModel2.getCancel_date());
+		System.out.println("예매날짜 "+mypageModel2.getReg_date());
+		*/
+		
+		mav.addObject("mypageModel2",mypageModel2);
+		mav.setViewName("reserveView"); 
+		return mav;
+	}
+}

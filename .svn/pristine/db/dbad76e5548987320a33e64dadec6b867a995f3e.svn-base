@@ -1,0 +1,86 @@
+package com.hotsix.notice;
+
+import java.util.List;
+import javax.annotation.Resource;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Service;
+import com.hotsix.notice.NoticeDAO;
+import com.hotsix.notice.NoticeModel;
+import com.hotsix.notice.NoticeCommentModel;
+
+@Service
+public class NoticeService implements NoticeDAO {
+    //공통쓰는부분
+	@Resource
+	private SqlSessionTemplate sqlSessionTemplate;
+
+	// 글목록
+	@Override
+	public List<NoticeModel> noticeList2() {
+		return sqlSessionTemplate.selectList("notice.selectOne-f");
+	}
+	
+	@Override
+	public List<NoticeModel> noticeList() {
+		return sqlSessionTemplate.selectList("notice.noticeList");
+	}
+
+	// 글쓰기
+	@Override
+	public int noticeWrite(NoticeModel noticeModel) {
+		return sqlSessionTemplate.insert("notice.noticeWrite", noticeModel);
+	}
+
+	// 상세보기
+	@Override
+	public NoticeModel noticeView(int no) {
+		return sqlSessionTemplate.selectOne("notice.noticeView", no);
+	}
+	//글수정
+	@Override
+	public int noticeModify(NoticeModel noticeModel) {
+		return sqlSessionTemplate.update("notice.noticeModify", noticeModel);
+	}
+	//글삭제
+	@Override
+	public int noticeDelete(int no) {
+		return sqlSessionTemplate.update("notice.noticeDelete", no);
+	}
+	//글조회수
+	@Override
+	public int noticeUpdateReadhit(int no) {
+		return sqlSessionTemplate.update("notice.noticeUpdateReadhit",no); 
+	}
+	//검색
+	@Override
+	public List<NoticeModel> noticeSearch0(String search) {
+		return sqlSessionTemplate.selectList("notice.noticeSearch0", "%"+search+"%");
+	}
+	@Override
+	public List<NoticeModel> noticeSearch1(String search) {
+		return sqlSessionTemplate.selectList("notice.noticeSearch1", "%"+search+"%");
+	}
+	//댓글
+	@Override
+	public boolean noticewritecomment(NoticeCommentModel ncModel) {
+		sqlSessionTemplate.insert("notice.noticewritecomment",ncModel); 
+		return true;
+	}
+	 
+	@Override
+	public List<NoticeCommentModel> noticecommentList(int notice_no) {
+		return sqlSessionTemplate.selectList("notice.noticecommentList",notice_no);
+	}
+	
+	@Override
+	public boolean noticedeletecomment(int noticecomment_no) {
+		sqlSessionTemplate.update("notice.noticedeletecomment", noticecomment_no);
+		return true;
+	}
+	
+	@Override
+	public int cmtcount(int notice_no) { 
+		return sqlSessionTemplate.selectOne("notice.cmtcount", notice_no);
+
+	}
+}

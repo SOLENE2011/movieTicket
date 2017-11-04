@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC " - //mybatis.org//DTD Config 3.0//EN"
+	   " http://mybatis.org/dtd/mybatis-3-config.dtd">
+	   
+<configuration>
+	<typeAliases>
+		<!-- Member -->
+		<typeAlias type="com.hotsix.member.MemberModel" alias="memberModel"/>
+		<typeAlias type="com.hotsix.member.ZipcodeModel" alias="zipcodeModel"/>
+		
+		<!-- Admin -->
+		<typeAlias type="com.hotsix.admin.TimeTableListModel" alias="timeTableListModel"/>
+		<typeAlias type="com.hotsix.admin.AdminModel" alias="adminModel" />
+		
+		<!-- Movie -->
+		<typeAlias type="com.hotsix.movie.MovieModel" alias="movieModel"/>
+		<typeAlias type="com.hotsix.movie.MovieGradeModel" alias="movieGradeModel"/>
+		 
+		<!-- Reserve -->
+		<typeAlias type="com.hotsix.reserve.TimetableMasterModel" alias="timetableMasterModel" />
+		<typeAlias type="com.hotsix.reserve.TimetableDetailModel" alias="timetableDetailModel" />
+		<typeAlias type="com.hotsix.reserve.RoomModel" alias="roomModel" />
+		<typeAlias type="com.hotsix.movie.MovieModel" alias="movieModelR"/>	
+		<typeAlias type="com.hotsix.reserve.TimetableModel" alias="timetableModel"/> 
+		<typeAlias type="com.hotsix.reserve.RoomModel" alias="roomModel"/>
+		<typeAlias type="com.hotsix.reserve.SeatModel" alias="seatModel"/>
+		<typeAlias type="com.hotsix.reserve.ReserveDetailModel" alias="reserveDetailModel"/>
+		<typeAlias type="com.hotsix.reserve.ReserveMasterModel" alias="reserveMasterModel"/>
+		<typeAlias type="com.hotsix.member.MemberModel" alias="memberModelR"/> 
+		
+		<!-- Magazine -->
+		<typeAlias type="com.hotsix.magazine.MagazineModel" alias="magazineModel"/>
+		<typeAlias type="com.hotsix.magazine.MagazineCommentModel" alias="mgModel"/>
+		
+		<!-- Event -->
+		<typeAlias type="com.hotsix.event.EventModel" alias="eventModel"/>
+		
+		<!-- QnA -->
+		<typeAlias type="com.hotsix.qna.QnaModel" alias="qnaModel"/>
+		
+		<!-- Notice -->
+		<typeAlias type="com.hotsix.notice.NoticeModel" alias="noticeModel" />
+		<typeAlias type="com.hotsix.notice.NoticeCommentModel" alias="ncModel"/>
+		
+		<!-- Mypage -->
+		<typeAlias type="com.hotsix.mypage.MypageModel" alias="reserveListModel" />
+        <typeAlias type="com.hotsix.member.MemberModel" alias="memberModelRR"/>  
+		<typeAlias type="com.hotsix.mypage.WishlistModel" alias="wishlistModel" />
+		<typeAlias type="com.hotsix.mypage.WishlistModel_2" alias="wishlistModel2"/>
+		<typeAlias type="com.hotsix.mypage.MypageModel2" alias="reserveListModel2" />
+		<typeAlias type="com.hotsix.mypage.reserveListModel" alias="reserveListModel_ACT"/>
+		
+		<!-- FreeBoard -->
+		<typeAlias type="com.hotsix.freeboard.FreeBoardModel" alias="freeBoardModel" />
+		
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/config/memberSQL.xml" />
+		<mapper resource="mybatis/config/eventSQL.xml" />
+		<mapper resource="mybatis/config/magazineSQL.xml" />
+		<mapper resource="mybatis/config/movieSQL.xml" />
+		<mapper resource="mybatis/config/qnaSQL.xml" />
+		<mapper resource="mybatis/config/noticeSQL.xml" />
+		<mapper resource="mybatis/config/adminSQL.xml" />
+		<mapper resource="mybatis/config/reserveSQL.xml"/>
+		<mapper resource="mybatis/config/freeBoardSQL.xml"/>
+		<mapper resource="mybatis/config/mypageSQL.xml" />
+		
+	</mappers>
+
+	
+</configuration>

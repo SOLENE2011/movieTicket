@@ -1,0 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	String cp = request.getContextPath();
+%>
+
+<script type="text/javascript">
+	function openQNA(url){
+      cw=screen.availWidth;     //화면 넓이
+      ch=screen.availHeight;    //화면 높이
+      sw=500;    //띄울 창의 넓이
+      sh=400;    //띄울 창의 높이
+      
+      ml=(cw-sw)/2;        //가운데 띄우기위한 창의 x위치
+      mt=(ch-sh)/2;        //가운데 띄우기위한 창의 y위치
+      window.open(url, "confirm","width="+sw+", height="+sh+",top="+mt+", left="+ml+", toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no");
+   }
+	
+	function deleteAdminQna() {
+		document.deleteForm1.submit();
+	}
+</script>
+
+<div class="admin_grp">
+	<div class="admin_list">
+		<ul>
+			<li><a href="<%=cp%>/admin/movieList.mt">상영작</a></li>
+			<li><a href="<%=cp%>/admin/timeTableList.mt">시간표관리</a></li>
+			<li><a href="<%=cp%>/admin/adminMagazineList.mt">매거진</a></li>
+			<li><a href="<%=cp%>/admin/adminEventList.mt">이벤트</a></li>
+			<li><a href="<%=cp%>/admin/adminNoticeList.mt">공지사항</a></li>
+			<li class="on"><a href="<%=cp %>/admin/adminQnaList.mt">Q&amp;A</a></li>
+			<li><a href="<%=cp%>/admin/memberList.mt">회원정보</a></li>
+		</ul>
+	</div>
+	<div class="admin_ct">
+		<h3 class="sub_tit">Q&amp;A View</h3>
+		<form action="" method="post">
+			<div class="tbl_type_01">
+				<table>
+					<caption>번호,제목,글쓴이,날짜,조회를 나타내는 QnA 표</caption>
+					<colgroup>
+						<col style="width: 120px;" />
+						<col />
+					</colgroup>
+					<tbody>
+						<tr>
+							<th scope="row">번호</th>
+							<td>${qnaModel.qna_no}</td>
+						</tr>
+						<tr>
+							<th scope="row">제목</th>
+							<td>${qnaModel.subject}</td>
+						</tr>
+						<tr>
+							<th scope="row">내용</th>
+							<td><pre>${qnaModel.content}</pre></td>
+						</tr>
+						<tr>
+							<th scope="row">글쓴이</th>
+							<td>${qnaModel.name}</td>
+						</tr>
+						<tr>
+							<th scope="row">날짜</th>
+							<td><fmt:formatDate value="${qnaModel.reg_date }"
+									pattern="yyyy.MM.dd" /></td>
+						</tr>
+						<tr>
+							<th scope="row">조회</th>
+							<td>${qnaModel.readhit}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+		<div class="btn_type_03">
+			<a href="<%=cp%>/admin/adminQnaModify.mt?qna_no=${qnaModel.qna_no}"
+				class="btn btnC_04 btnP_04 mr5"> <span>수정</span>
+			</a> <a href="#none" onclick="deleteAdminQna()"
+				class="btn btnC_03 btnP_04 mr5"> <span>삭제</span>
+			</a> <a href="<%=cp%>/admin/adminQnaList.mt"
+				class="btn btnC_03 btnP_04 mr5"> <span>목록</span>
+			</a>
+			<c:if test="${session_member_grade == '1'}">
+				<a
+					href="<%=cp%>/admin/adminQnaReply.mt?qna_no=${qnaModel.qna_no}&currentPage=${currentPage}"
+					class="btn btnC_03 btnP_04" accesskey="4"> <span>답변</span>
+				</a>
+			</c:if>
+			<form action="<%= cp %>/admin/adminQnaDelete.mt" method="post"
+				name="deleteForm1">
+				<input type="hidden" value="${qnaModel.qna_no}" name="qna_no">
+				<input type="hidden" value="${qnaModel.passwd}" name="passwd">
+				<input type="hidden" value="${currentPage}" name="currentPage">
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,88 @@
+package com.hotsix.mypage;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Service;
+
+import com.hotsix.member.MemberModel;
+/**
+ * 마이페이지의 SQL 서비스
+ * @author user1
+ *
+ */
+@Service
+public class MypageService implements MypageDAO{
+	
+	@Resource
+	private SqlSessionTemplate sqlSessionTemplate;
+	
+	//M_COIN
+	@Override
+	public MemberModel getMemberModel(int member_no) {
+		return sqlSessionTemplate.selectOne("mypage.memberOne", member_no);
+	}
+
+	@Override
+	public Object updateMticket(MemberModel member_no) {
+		return sqlSessionTemplate.update("mypage.updateMticketPage", member_no);
+	}
+	
+	@Override
+    public List<MypageModel> reserveList(int session_member_no) {
+    	return sqlSessionTemplate.selectList("mypage.mypageA",session_member_no);
+    }
+	
+	@Override
+	public List<MypageModel> cancelList(int session_member_no) {
+	    return sqlSessionTemplate.selectList("mypage.mypageCancel",session_member_no);
+    }
+	
+	@Override
+	public Object cancelReserve(MypageModel mypageModel) {
+		return sqlSessionTemplate.selectList("mypage.updatemypage", mypageModel);
+	}
+	
+	@Override
+	public Object cancelReserve2(MypageModel mypageModel) {
+		return sqlSessionTemplate.selectList("mypage.updatemypage2", mypageModel);
+	}
+	
+	@Override
+	public Object addWishlist(WishlistModel wishlistModel) {
+		return sqlSessionTemplate.insert("mypage.addWishlist",wishlistModel);
+	}
+	
+	@Override
+	public List<WishlistModel> selectWishlist(int session_member_no) {
+	    return sqlSessionTemplate.selectList("mypage.selectWishlist",session_member_no);
+    }
+
+	@Override
+	public Object deleteWishlist(WishlistModel wishlistModel) {
+		return sqlSessionTemplate.delete("mypage.deleteWishlist",wishlistModel);
+
+	}
+
+	@Override
+	public List<WishlistModel_2> selectWishlistCheck(WishlistModel_2 wishlistModel) {
+		return sqlSessionTemplate.selectList("mypage.selectWishlistCheck", wishlistModel);
+	}
+
+	@Override
+	public MypageModel2 selectReserveView(MypageModel2 mypageModel2) {
+		return sqlSessionTemplate.selectOne("mypage.selectReserveView",mypageModel2);
+	}
+	/**
+	 * @return MypageModel3
+	 * 예매 상세보기에서 reserve_master 테이블에서 어른,아이,총합을 가져오는 메소드
+	 * 
+	 */
+	@Override
+	public MypageModel3 reserveList_ACT(Long no) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("mypage.reserveList_ACT",no);
+	}
+}

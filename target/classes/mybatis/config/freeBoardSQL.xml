@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="free">
+	<resultMap type="freeBoardModel" id="freeBoardRes">
+		<result property="free_no" column="free_no" />
+		<result property="name" column="name" />
+		<result property="subject" column="subject" />
+		<result property="contents" column="contents" />
+		<result property="reg_date" column="reg_date" />
+		<result property="read_hit" column="read_hit" />
+	</resultMap>
+	
+	<sql id="select_all">
+		select * from FREE_BOARD
+	</sql>
+	
+	<!-- 글 목록 -->
+	<select id="freeList" resultMap="freeBoardRes">
+		<include refid="select_all" />
+		order by free_no desc
+	</select>
+	
+	<!-- 글입력 -->
+	<insert id="freeWrite" parameterType="freeBoardModel">
+		insert into FREE_BOARD (free_no, name, subject, contents, reg_date, read_hit)
+		values (FREE_BOARD_NO_SEQ.nextval, #{name}, #{subject}, #{contents}, sysdate, #{read_hit})
+	</insert>
+	
+	<!-- 조회수 1증가 -->
+	<update id="freeUpdateReadHit" parameterType="Integer">
+		update FREE_BOARD
+		set read_hit = read_hit + 1
+		where free_no = #{free_no}
+	</update>
+	
+	<!-- 글상세 -->
+	<select id="freeView" parameterType="freeBoardModel" resultMap="freeBoardRes">
+		<include refid="select_all" />
+		where free_no = #{free_no}
+	</select>
+	
+	<!-- 수정 -->
+	<update id="freeUpdate" parameterType="freeBoardModel">
+		update FREE_BOARD 
+		set subject = #{subject},
+			contents = #{contents}
+		where free_no = #{free_no}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="freeDelete" parameterType="freeBoardModel">
+		delete from FREE_BOARD
+		where free_no = #{free_no}
+	</update>
+	
+	<!-- 검색 -->
+	<select id="memberSearch0" resultMap="freeBoardRes">
+		select * from FREE_BOARD 
+		where name like #{search} 
+		order by free_no desc
+	</select>
+	<select id="memberSearch1" resultMap="freeBoardRes">
+		select * from FREE_BOARD 
+		where subject like #{search} 
+		order by free_no desc
+	</select>
+	
+</mapper>

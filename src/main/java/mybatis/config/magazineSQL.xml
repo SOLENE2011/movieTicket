@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="magazine">
+<!--리절트 맵 정의 -->
+
+	<!-- MagazineModel -->
+	<resultMap id="magazineModelRes" type="magazineModel">
+		<result column="magazine_no" property="magazine_no"/>
+		<result column="subject" property="subject"/>
+		<result column="subject2" property="subject2"/>
+		<result column="content" property="content"/>
+		<result column="image1" property="image1"/>
+		<result column="image2" property="image2"/>
+		<result column="sub_subject1" property="sub_subject1"/>
+		<result column="sub_subject2" property="sub_subject2"/>
+		<result column="sub_content2" property="sub_content2"/>
+		<result column="reg_date" property="reg_date"/>
+		<result column="readhit" property="readhit"/>
+	</resultMap>
+	
+	
+	<!-- MagazineCommentModel-->
+	 <resultMap type="mgModel" id="mgRes">
+	  <result property="mcomment_no" column="mcomment_no"/> 
+	  <result property="origin_no" column="origin_no"/> 
+	  <result property="name" column="name"/> 
+	  <result property="password" column="password"/>
+	   <result property="content" column="content"/> 
+	   <result property="reg_date" column="reg_date"/>
+	 </resultMap>
+	
+	
+	<sql id="select-allmg">
+	 select * from MAGAZINE 
+	</sql>
+	
+	<sql id="where-nomg">
+	 where magazine_no=#{magazine_no}
+	</sql>
+	
+	<select id="selectAll-mg" resultMap="magazineModelRes" parameterType="int">
+		<include refid="select-allmg"/>
+	</select>
+	
+	<!-- comment -->
+	<select id="selectcmtAll" resultMap="mgRes" parameterType="mgModel">
+		select * from mcomment where origin_no=#{origin_no}
+		order by mcomment_no desc
+	</select>
+	
+	<select id="magazineList" resultMap="magazineModelRes">
+	 select * from MAGAZINE order by magazine_no desc 
+	</select>
+	
+	<!-- comment -->
+	
+	<!-- <select id="selectcmtAll" resultMap="mgRes" parameterType="mgModel"> 
+	select * from mcomment where origin_no=#{origin_no} 
+	order by mcomment_no desc
+	 </select> -->
+	
+	<insert id="magazineWrite" parameterType="magazineModel">
+		 insert into magazine(magazine_no, 
+		 subject,subject2,content,sub_subject1,
+		  sub_subject2,sub_content2,image1,image2,readhit,reg_date) 
+		  values(magazine_no_seq.NEXTVAL,#{subject},#{subject2},#{content},#{sub_subject1}, 
+		  #{sub_subject2},#{sub_content2},#{image1},#{image2},#{readhit},sysdate) 
+	</insert> 
+	
+	<!-- <insert id="magazineWrite" parameterType="magazineModel">
+		 insert into magazine(magazine_no, 
+		 subject, subject2, content, image1, image2,reg_date)
+		  values(magazine_no_seq.NEXTVAL, #{subject}, #{subject2}, #{content}, #{image1}, #{image2},sysdate)
+		  
+	</insert>  -->
+	
+	<insert id="writecomment" parameterType="mgModel">
+		insert into mcomment 
+		values(MCOMMENT_NO_SEQ.NEXTVAL,
+		#{origin_no},
+		#{name},
+		#{password},
+		#{content},
+		sysdate)
+	</insert>
+	
+	<select id="passwordfind" parameterType="String" resultMap="mgRes"> 
+			select *
+			from mcomment
+			where mcomment_no = #{mcomment_no} 
+	</select>
+		
+	<delete id="commentDelete" parameterType="mgModel">
+		delete from mcomment where mcomment_no=#{mcomment_no} and password=#{password}
+	</delete>
+	
+	<select id="cmtcount" parameterType="int" resultType="int">
+		select count(*) as cmtcount from mcomment where origin_no=#{origin_no}
+	</select>
+	
+	<select id="getMagazine_NO_SEQ" resultType="int"> 
+		select magazine_no_seq.nextval from dual
+	</select>
+	
+	<select id="magazineView" resultMap="magazineModelRes" parameterType="magazineModel">
+		select * from magazine where magazine_no = #{magazine_no}
+	</select>
+	
+	<update id="magazineUpdate" parameterType="magazineModel">
+		update magazine set subject=#{subject},
+							subject2=#{subject2},
+							content=#{content},
+							sub_subject1=#{sub_subject1},
+							sub_subject2=#{sub_subject2},
+							sub_content2=#{sub_content2},
+							image1=#{image1,jdbcType=NUMERIC},
+							image2=#{image2,jdbcType=NUMERIC}
+							<!-- reg_date=#{reg_date} -->
+							
+							where magazine_no=#{magazine_no}
+	</update>
+	
+	<update id="magazineDelete" parameterType="magazineModel">
+		delete magazine 
+			where magazine_no=#{magazine_no}
+	</update>
+	
+	
+	<!-- search -->
+	<select id="magazineSearch0" resultMap="magazineModelRes" parameterType="String">
+		select * from magazine where subject like #{search} or subject2 like #{search}
+		order by magazine_no desc
+	</select>
+	
+	<select id="magazineSearch1" resultMap="magazineModelRes" parameterType="String">
+		select * from magazine where content like #{search} or sub_content2 like #{search}
+		order by magazine_no desc
+	</select>
+	
+	<update id="magazineUpdateReadhit" parameterType="Integer">
+		UPDATE MAGAZINE SET READHIT=READHIT+1 WHERE MAGAZINE_NO=#{MAGAZINE_NO}
+	</update>
+
+</mapper>

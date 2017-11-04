@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>M-Ticket</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="../../css/import.css" />
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="logo">
+			<h1><a href="../index.html">M-Ticket</a></h1>
+		</div>
+		<div class="util_menu">
+			<div class="inner">
+				<ul>
+					<li><a href="../member/member_01.html">회원가입</a></li>
+					<li><a href="#none">아이디찾기</a></li>
+					<li><a href="#none">비밀번호찾기</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="gnb">
+			<ul>
+				<li><a href="#none">예매</a></li>
+				<li><a href="#none">상영작</a></li>
+				<li><a href="#none">매거진</a></li>
+			</ul>
+		</div>
+	</div><!-- // header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="movie_grp">
+			<div class="movie_pic">
+				<img src="../../images/sample_movie2.jpg" alt="" />
+			</div>
+			<div class="movie_txt">
+				<p class="tit">배트맨 대 슈퍼맨: 저스티스의 시작 상영중</p>
+				<dl>
+					<dt>개요</dt>
+					<dd>액션,미국,125분</dd>
+					<dt>감독</dt>
+					<dd>잭스나이더</dd>
+					<dt>출현</dt>
+					<dd>헨리 카빌(클락 켄트 / 슈퍼맨), 벤 애플렉(브루스 웨인 / 배트맨)</dd>
+					<dt>개봉</dt>
+					<dd>2015-04-06</dd>
+					<dt>평점</dt>
+					<dd>5.0</dd>
+				</dl>
+				<div class="movie_btn">
+					<span class="btn btnC_02 btnF_01 mr10">
+						<input type="button" value="예매하기" />
+					</span>
+					<a href="wish_list.html" class="btn btnC_02 btnF_01">
+						<span>위시리스트</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<h3 class="sub_tit">줄거리</h3>
+		<p class="summary">슈퍼맨과 조드 장군의 격렬한 전투 이후 메트로폴리스는 파괴되었고 슈퍼맨은 세계 최고 논쟁의 인물이 되어버린다. 한편 배트맨은 그 동안 타락했던 많은 자들처럼 슈퍼맨 역시 언젠가 타락을 할 것이라 생각하며 사회에서 가장 위험한 존재로 여긴다. 세계의 미래를 위해 무모하고 제어할 수 없는 힘을 가진 슈퍼맨으로 인해 벌어졌던 일들을 바로 잡으려 하는데…</p>
+
+
+		<h3 class="sub_tit">스틸컷</h3>
+		<div class="movie_steel">
+			<div class="inner">
+				<ul>
+					<li><img src="../../images/sample_magazine.jpg" alt="" /></li>
+					<li><img src="../../images/sample_magazine.jpg" alt="" /></li>
+					<li><img src="../../images/sample_magazine.jpg" alt="" /></li>
+					<li><img src="../../images/sample_magazine.jpg" alt="" /></li>
+					<li><img src="../../images/sample_magazine.jpg" alt="" /></li>
+				</ul>
+			</div>
+		</div>
+	</div><!-- // container -->
+
+	<!-- footer -->
+	<div id="footer">
+		<div class="ft_ct">
+			<div class="inner">
+				<h1>M-Ticket</h1>
+				<div class="ft_list">
+					<ul>
+						<li><a href="#none">공지사항</a></li>
+						<li><a href="#none">FAQ</a></li>
+						<li><a href="#none">이용약관</a></li>
+						<li><a href="#none">개인정보취급방침</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="address">
+				<p>강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F  |  강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 5F, 7F  |  종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F 이태원지원 : 서울특별시 용산구 보광로 73 한국폴리텍제1대학  |  울산지원 : 울산광역시 남구 신정2동 1640-6번지 현대스포츠센터2F</p>
+				<p class="copy">COPYRIGHT© LOTTE CINEMA ALL RIGHT RESERVED.</p>
+			</div>
+		</div>
+	</div><!-- // footer -->
+</div>
+</body>
+</html>

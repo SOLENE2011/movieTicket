@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>M-Ticket</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="../../css/import.css" />
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="logo">
+			<h1><a href="../index.html">M-Ticket</a></h1>
+		</div>
+		<div class="util_menu">
+			<div class="inner">
+				<ul>
+					<li><a href="../member/member_01.html">회원가입</a></li>
+					<li><a href="#none">아이디찾기</a></li>
+					<li><a href="#none">비밀번호찾기</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="gnb">
+			<ul>
+				<li><a href="#none">예매</a></li>
+				<li><a href="#none">상영작</a></li>
+				<li><a href="#none">매거진</a></li>
+			</ul>
+		</div>
+	</div><!-- // header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="magazine_grp">
+			<h3 class="sub_tit">스페셜 리포트</h3>
+			<div class="magazine_view">
+				<p class="view_main"><img src="../../images/sample_magazine_view.jpg" alt="" /></p>
+				<p class="view_txt">전 세계를 미스터리 신드롬에 열광하게 한 [파라노말 액티비티] 시리즈의 최종 편인 [파라노말 액티비티: 더 고스트 디멘션]이 4월 21일 국내 개봉을 앞두고 있다. 제작사인 블룸 하우스는 [파라노말 액티비티] 시리즈, [인시디어스] 시리즈, [오큘러스], [더 비지트] 등 개봉하는 영화마다 독창적인 아이디어로 흥행가도를 달리며 관객들에게 할리우드 호러 명가로 확실하게 자리매김하였다. 또한 호러뿐 아니라 다양한 장르 영화에 대한 끊임없는 도전을 시도하여 [위플래쉬]라는 기존의 틀을 벗어난 음악영화까지 선보였다. 명확한 콘셉트을 통해 높은 퀄리티의 작품을 관객들을 열광하게 하는 블룸 하우스의 대표작들에 대해 알아보도록 하자.</p>
+
+				<div class="view_steel">
+					<p class="tit">1. 죽은 자를 부르는 의식</p>
+					<p class="steel_txt">전 세계적으로 히트한 공포 영화 [쏘우]의 제작진과 [파라노말 액티비티]를 제작한 블룸 하우스가 만난다는 것만으로도 개봉 전부터 큰 화제를 불러일으켰던 [인시디어스] 시리즈는 유체 이탈과 영매라는 독특한 소재를 통해 이야기를 펼친다. 악령에게 고통받는 가족의 수난기를 그린만큼 모든 사건은 귀신 들린 집 안에서 벌어진다. 좁은 복도나 어두컴컴한 방 안을 무대로 하여 그 공간의 끝에서 일어날 사건에 대한 관객들의 상상력을 자극하였고, 이것이 긴장감을 더했다. 영화는 피 한 방울 흘리는 장면 하나 없이도 관객들이 이 귀신 들린 집 이야기에 공포감을 느끼고 열광할 수 있게 만들어 내며 [파라노말 액티비티]에 이어 블룸 하우스의 대표 하우스 호러 프랜차이즈로 등극했다.</p>
+				</div>
+				<div class="view_steel">
+					<p class="tit">2. 죽은 자를 부르는 의식</p>
+					<p class="steel_txt">전 세계적으로 히트한 공포 영화 [쏘우]의 제작진과 [파라노말 액티비티]를 제작한 블룸 하우스가 만난다는 것만으로도 개봉 전부터 큰 화제를 불러일으켰던 [인시디어스] 시리즈는 유체 이탈과 영매라는 독특한 소재를 통해 이야기를 펼친다. 악령에게 고통받는 가족의 수난기를 그린만큼 모든 사건은 귀신 들린 집 안에서 벌어진다. 좁은 복도나 어두컴컴한 방 안을 무대로 하여 그 공간의 끝에서 일어날 사건에 대한 관객들의 상상력을 자극하였고, 이것이 긴장감을 더했다. 영화는 피 한 방울 흘리는 장면 하나 없이도 관객들이 이 귀신 들린 집 이야기에 공포감을 느끼고 열광할 수 있게 만들어 내며 [파라노말 액티비티]에 이어 블룸 하우스의 대표 하우스 호러 프랜차이즈로 등극했다.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- reply_grp -->
+		<div class="reply_grp">
+			<div class="reply_form">
+				<div class="reply_inp">
+					<div class="inner">작성자 : <input type="text" class="txt w100" /></div>
+					<div class="inner">비밀번호 : <input type="password" class="txt w100" /></div>
+				</div>
+				<div class="reply_write">
+					<div class="textarea_grp">
+						<pre><textarea></textarea></pre>
+					</div>
+					<span class="btn btnC_05 reply_btn">
+						<input type="submit" value="입력" />
+					</span>
+				</div>
+			</div>
+			
+			<!-- <p class="reply_num">댓글 수 <strong>1</strong></p> -->
+			<div class="reply_view">
+				<div class="reply_tit">
+					<p class="tit"><strong>김형섭</strong>님 2016-03-03 <span class="ip">111</span></p>
+					<a href="#none" class="btn btnC_01 btnP_02">
+						<span>삭제</span>
+					</a>
+				</div>
+				<div class="reply_cts">
+					<p>댓글내용입니다.댓글내용입니다.</p>
+				</div>
+			</div>
+
+			<div class="reply_view">
+				<div class="reply_tit">
+					<p class="tit"><strong>김형섭</strong>님 2016-03-03 <span class="ip">111</span></p>
+					<a href="#none" class="btn btnC_01 btnP_02">
+						<span>삭제</span>
+					</a>
+				</div>
+				<div class="reply_cts">
+					<p>댓글내용입니다.댓글내용입니다.</p>
+				</div>
+			</div>
+		</div><!-- // reply_grp -->
+
+		<div class="btn_type_03">
+			<a href="magazine_list.html" class="btn btnC_03 btnP_04">
+				<span>목록</span>
+			</a>
+		</div>
+
+		<!-- paging -->
+		<div class="paging">
+			<a href="#none" class="page prv">&lt;</a>
+			<strong>1</strong>
+			<a href="#none" class="page">2</a>
+			<a href="#none" class="page">3</a>
+			<a href="#none" class="page">4</a>
+			<a href="#none" class="page">5</a>
+			<a href="#none" class="page next">&gt;</a>
+		</div><!-- // paging -->
+	</div><!-- // container -->
+
+	<!-- footer -->
+	<div id="footer">
+		<div class="ft_ct">
+			<div class="inner">
+				<h1>M-Ticket</h1>
+				<div class="ft_list">
+					<ul>
+						<li><a href="#none">공지사항</a></li>
+						<li><a href="#none">FAQ</a></li>
+						<li><a href="#none">이용약관</a></li>
+						<li><a href="#none">개인정보취급방침</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="address">
+				<p>강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F  |  강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 5F, 7F  |  종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F 이태원지원 : 서울특별시 용산구 보광로 73 한국폴리텍제1대학  |  울산지원 : 울산광역시 남구 신정2동 1640-6번지 현대스포츠센터2F</p>
+				<p class="copy">COPYRIGHT© LOTTE CINEMA ALL RIGHT RESERVED.</p>
+			</div>
+		</div>
+	</div><!-- // footer -->
+</div>
+</body>
+</html>

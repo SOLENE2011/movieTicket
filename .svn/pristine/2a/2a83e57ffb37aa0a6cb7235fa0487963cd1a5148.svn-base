@@ -1,0 +1,197 @@
+package com.hotsix.freeboard;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.hotsix.common.Paging;
+
+@Controller
+@RequestMapping("/free")
+public class FreeBoardController {
+	
+	@Resource(name = "freeBoardService")
+	private FreeBoardService freeBoardService;
+	
+	ModelAndView mav = new ModelAndView();
+	
+	//검색
+	private int searchNum;
+	private String isSearch;
+
+	// paging
+	private int currentPage = 1; // 현재 페이지
+	private int totalCount; // 총 게시물의 수
+	private int blockCount = 4; // 현재 페이지에 보여줄 게시물의 갯수
+	private int blockPage = 5; // 보여줄 페이지의 갯수
+	private String pagingHtml; // paging을 구현한 HTML
+	private Paging paging; // 페이징 클래스의 변수 선언
+	
+	
+	
+	@RequestMapping(value = "/freeBoardList.mt", method = RequestMethod.GET)
+	public ModelAndView freeBoardList(HttpServletRequest request, HttpSession session){
+		
+		// 로그인 세션 여부 검사
+		if(session.getAttribute("session_member_id") == null){
+			mav.setViewName("common/loginConfirm");
+			return mav;
+		}
+		
+		if(request.getParameter("currentPage") == null || request.getParameter("currentPage").trim().isEmpty() || request.getParameter("currentPage").equals("0")){
+			currentPage = 1;
+		}else{
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		List<FreeBoardModel> freeBoardList = null;
+		
+		isSearch = request.getParameter("isSearch");
+		
+		if(isSearch != null){
+			searchNum = Integer.parseInt(request.getParameter("searchNum"));
+			
+			if(searchNum == 0){
+				freeBoardList = freeBoardService.memberSearch0(isSearch);
+			}else if(searchNum == 1){
+				freeBoardList = freeBoardService.memberSearch1(isSearch);
+			}
+			
+			totalCount = freeBoardList.size();
+			paging = new Paging(currentPage, totalCount, blockCount, blockPage, "freeBoardList", searchNum, isSearch);
+			pagingHtml = paging.getPagingHtml().toString();
+			
+			int lastCount = totalCount;
+			
+			if(paging.getEndCount() < totalCount){
+				lastCount = paging.getEndCount() + 1;
+			}
+			
+			freeBoardList = freeBoardList.subList(paging.getStartCount(), lastCount);
+			
+			mav.addObject("isSearch", isSearch);
+			mav.addObject("searchNum", searchNum);
+			mav.addObject("pagingHtml", pagingHtml);
+			mav.addObject("totalCount", totalCount);
+			mav.addObject("currentPage", currentPage);
+			mav.addObject("freeBoardList", freeBoardList);
+			mav.setViewName("freeboardList");
+			return mav;
+		}
+		
+		freeBoardList = freeBoardService.freeBoardList();
+		
+		totalCount = freeBoardList.size();
+		paging = new Paging(currentPage, totalCount, blockCount, blockPage, "freeBoardList");
+		pagingHtml = paging.getPagingHtml().toString();
+		
+		int lastCount = totalCount;
+		
+		if(paging.getEndCount() < totalCount){
+			lastCount = paging.getEndCount() + 1;
+		}
+		
+		freeBoardList = freeBoardList.subList(paging.getStartCount(), lastCount);
+		
+		mav.addObject("pagingHtml", pagingHtml);
+		mav.addObject("totalCount", totalCount);
+		mav.addObject("currentPage", currentPage);
+		mav.addObject("freeBoardList", freeBoardList);
+		mav.setViewName("freeboardList");
+		return mav;
+	}
+	
+	// 글쓰기 폼
+	@RequestMapping(value = "/freeBoardWrite.mt", method = RequestMethod.GET)
+	public ModelAndView freeBoardWriteForm(HttpServletRequest request){
+		mav.setViewName("freeboardWrite");
+		return mav;
+	}
+	
+	// 글쓰기 전송 
+	@RequestMapping(value = "/freeBoardWrite.mt", method = RequestMethod.POST)
+	public ModelAndView freeBoardWrite(HttpServletRequest request, FreeBoardModel freeBoardModel){
+		freeBoardService.freeBoardWrite(freeBoardModel);
+		mav = new ModelAndView();
+		mav.setViewName("redirect:freeBoardList.mt");
+		return mav;
+	}
+	
+	// 상세보기
+	@RequestMapping(value = "/freeBoardView.mt", method = RequestMethod.GET)
+	public ModelAndView freeBoardView(HttpServletRequest request, @ModelAttribute("freeBoard") FreeBoardModel freeBoardModel){
+		
+		freeBoardService.freeUpdateReadHit(freeBoardModel.getFree_no());
+		freeBoardModel = freeBoardService.freeBoardView(freeBoardModel.getFree_no());
+		
+		mav = new ModelAndView();
+		mav.addObject("freeBoard",freeBoardModel);
+		mav.setViewName("freeboardView");
+		return mav;
+	}
+	
+	// 수정폼
+	@RequestMapping(value = "/freeBoardModifyForm.mt", method = RequestMethod.POST)
+	public ModelAndView freeBoardModifyForm(HttpServletRequest request, FreeBoardModel freeBoardModel){
+		mav = new ModelAndView();
+		mav.addObject("freeModify",freeBoardService.freeBoardView(freeBoardModel.getFree_no()));
+		mav.addObject("modify","true");
+		mav.setViewName("freeboardWrite");
+		return mav;
+	}
+	
+	// 수정폼 전송
+	@RequestMapping(value = "/freeBoardModify.mt", method = RequestMethod.POST)
+	public ModelAndView freeBoardModify(HttpServletRequest request, FreeBoardModel freeBoardModel){
+		freeBoardModel.setContents(freeBoardModel.getContents().replaceAll("\n", "").replaceAll("\t", "").replaceAll("\r", "").replaceAll("'", "&apos;"));
+		freeBoardService.freeBoardModify(freeBoardModel);
+		
+		mav = new ModelAndView();
+		mav.setViewName("redirect:freeBoardView.mt?free_no="+freeBoardModel.getFree_no());
+		return mav;
+	}
+	
+	// 삭제
+	@RequestMapping(value = "/freeBoardDelete.mt" , method = RequestMethod.GET)
+	public ModelAndView freeBoardDelete(HttpServletRequest request){
+		int free_no = Integer.parseInt(request.getParameter("free_no"));
+		
+		freeBoardService.freeBoardDelete(free_no);
+		mav = new ModelAndView();
+		mav.setViewName("redirect:freeBoardList.mt");
+		return mav;
+	}
+	
+	// 파일업로드
+	@RequestMapping(value = "/fileUpload.mt" , method = RequestMethod.POST)
+	public ModelAndView fileUpload(HttpServletRequest request, MultipartRequest multipartRequest) throws IOException{
+		MultipartFile imgfile = multipartRequest.getFile("Filedata");
+		Calendar cal = Calendar.getInstance();
+		String fileName = imgfile.getOriginalFilename();
+		String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+		String replaceName = cal.getTimeInMillis() + fileType;
+		//String path = request.getSession().getServletContext().getRealPath("/")+File.separator+"resources/editor_img";
+		String path = "C:\\java\\app\\MovieTicket\\src\\main\\webapp\\upload\\editor_img\\";
+		
+		
+		FileUpload.fileUpload(imgfile, path, replaceName);
+		mav = new ModelAndView();
+		mav.addObject("path",path);
+		mav.addObject("filename",replaceName);
+		mav.setViewName("common/file_upload");
+		return mav;
+	}
+	
+}

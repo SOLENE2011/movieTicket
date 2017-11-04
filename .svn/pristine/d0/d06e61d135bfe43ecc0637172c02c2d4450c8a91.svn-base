@@ -1,0 +1,72 @@
+package com.hotsix.main;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.hotsix.common.Paging;
+import com.hotsix.movie.MovieModel;
+import com.hotsix.movie.MovieService;
+import com.hotsix.notice.NoticeModel;
+import com.hotsix.notice.NoticeService;
+
+@Controller
+public class MainController {
+	Logger log = Logger.getLogger(this.getClass());
+	
+	@Resource
+	private MovieService movieService;
+	@Resource
+	private NoticeService noticeService;
+	
+	private int currentPage = 1;
+	private int totalCount;
+	private int blockCount = 5;
+	private int blockPage = 5;
+	private String pagingHtml;
+	private Paging paging;
+	
+	@RequestMapping("main.mt")
+	public ModelAndView mainView(HttpServletRequest request){
+		ModelAndView mav = new ModelAndView();
+		//ModelAndView를 mav로 객체생성
+		List<MovieModel> movieList = movieService.movieList();
+		List<NoticeModel> noticeList2 = noticeService.noticeList2();
+		//List<MovieModel>에 movieList = 오른쪽movieList()에 movieService담는다
+		
+		if (request.getParameter("currentPage") == null || request.getParameter("currentPage").trim().isEmpty()
+				|| request.getParameter("currentPage").equals("0")) {
+			currentPage = 1;
+		}//currentPage가 null거나  공백이거나 0이면 currentPage를 1로 설정
+		else {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		//getParameter으로 받은 currentPage를 인트타입으로 왼쪽 currentPage에 담는다.
+		totalCount = movieList.size();
+		//총 갯수 = movie리스트에 있는 갯수
+		paging = new Paging(currentPage, totalCount, blockCount, blockPage, "movieList");
+		pagingHtml = paging.getPagingHtml().toString();
+		
+		int lastCount = totalCount;
+		//인트타입의 마지막갯수 = 총갯수
+		//System.out.println(paging.getEndCount());
+		//System.out.println(totalCount);
+		if (paging.getEndCount() < totalCount) {
+			lastCount = paging.getEndCount() + 1;
+		}
+        //totalCount보다 getEndCount()이게작으면 lastCount 페이지에 +1
+		movieList = movieList.subList(paging.getStartCount(), lastCount);
+		//movieList=movieList에 시작부터 끝까지 페이지를 담는다.
+		
+		mav.addObject("list", movieList);
+		mav.addObject("list2", noticeList2);
+		mav.setViewName("main");//다실행하고 메인으로 이동
+		return mav;
+	}
+}

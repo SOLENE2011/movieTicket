@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reserve">
+
+	<resultMap type="memberModelR" id="memberRes"> <!-- 회원정보 관련(번호가져오기 토렌트코인 업데이트) -->
+		<result property="member_no" column="member_no"/>
+		<result property="mticket_coin" column="mticket_coin"/>
+	</resultMap> 
+
+	<resultMap type="timetableModel" id="timeRes">
+		<result property="movie_no" column="movie_no"/> 
+		<result property="room_no" column="room_no"/> 
+		<result property="time_no" column="time_no"/> 
+		<result property="schedule_no" column="schedule_no"/> 
+		<result property="movie_name" column="movie_name"/> 
+		<result property="room_name" column="room_name"/> 
+		<result property="time_name" column="time_name"/> 
+		<result property="movie_show_date" column="movie_show_date"/> 
+		<result property="start_time" column="start_time"/> 
+		<result property="end_time" column="end_time"/> 
+		<result property="start_date" column="start_date"/> 
+		<result property="end_date" column="end_date"/> 
+		<result property="total_seat" column="total_seat"/> 
+		<result property="reserved_seat" column="reserved_seat"/> 
+		<result property="adult_amt" column="adult_amt"/> 
+		<result property="child_amt" column="child_amt"/> 
+	</resultMap>
+
+	<resultMap type="movieModelR" id="movieRRes">  <!-- 영화정보 관련 -->
+		<result property="movie_no" column="movie_no"/> 
+		<result property="movie_name" column="movie_name"/> 
+		<result property="movie_director" column="movie_director"/> 	
+		<result property="movie_actor" column="movie_actor"/> 
+		<result property="movie_show_date" column="movie_show_date"/> 
+	</resultMap>
+	
+	<resultMap type="roomModel" id="roomRes">
+		<result property="room_no" column="room_no"/> 
+		<result property="room_name" column="room_name"/> 
+	</resultMap>
+	
+	<resultMap type="seatModel" id="seatRes">
+		<result property="seat_no" column="seat_no"/> 
+		<result property="room_no" column="room_no"/> 
+		<result property="seat_name" column="seat_name"/>  
+		<result property="seat_position" column="seat_position"/> 
+		<result property="reserved" column="reserved"/>  
+	</resultMap> 
+	
+	<resultMap type="timetableDetailModel" id="timeDetailRes">
+		<result property="time_detail_no" column="time_detail_no"/> 
+		<result property="time_no" column="time_no"/> 
+		<result property="time_name" column="time_name"/> 
+		<result property="show_date" column="show_date"/> 
+		<result property="start_time" column="start_time"/> 
+		<result property="end_time" column="end_time"/> 
+		<result property="adult_amt" column="adult_amt"/> 
+		<result property="child_amt" column="child_amt"/> 
+		<result property="total_seat" column="total_seat"/> 
+		<result property="reserved_seat" column="reserved_seat"/> 
+	</resultMap>
+	
+
+	<select id="timeMovieData" resultMap="movieRRes">
+		select movie_no, movie_name from movie order by movie_no desc
+	</select>
+	
+	<select id="currMovie" resultMap="timeRes">
+		select m.movie_no
+			 , tm.room_no
+			 , tm.time_no
+			 , 0 			as time_detail_no
+			 , m.movie_name
+			 , '' 			as room_name
+			 , '' 			as time_name
+			 , ''			as show_date
+			 , '' 			as start_time
+			 , '' 			as end_time
+			 , tm.start_date
+			 , tm.end_date
+			 , 0 			as total_seat
+			 , 0 			as reserved_seat
+			 , 0			as adult_amt
+			 , 0			as child_amt
+		from   movie m, timetable_master tm
+		where  m.movie_no  = tm.movie_no 
+		and    tm.time_no in ( select time_no 
+							   from   timetable_detail
+						 	   where show_date >= to_char(sysdate,'YYYYMMDD') )
+		order by movie_no
+	</select>
+	
+	<select id="TimeList" resultMap="timeRes" parameterType="timetableModel">
+			select m.movie_no,
+				   r.room_no,
+				   tm.time_no,
+				   td.time_detail_no,
+				   m.movie_name,
+				   r.room_name,
+				   td.show_date,
+				   td.time_name,
+				   td.start_time,
+				   td.end_time,
+				   td.total_seat,
+				   td.reserved_seat,
+				   td.adult_amt,
+				   td.child_amt
+			from   timetable_master tm,
+				   timetable_detail td,
+				   movie			m ,
+				   room				r
+			where  tm.time_no   = td.time_no
+			and    tm.movie_no  = m.movie_no
+			and    tm.room_no   = r.room_no
+			and    tm.movie_no  = #{movie_no}
+			and    td.show_date	= #{show_date}
+		</select>
+		
+		<select id="playdates" resultMap="timeRes" parameterType="int">
+					select distinct
+			   0			as movie_no
+			 , 0			as room_no
+			 , 0			as time_no
+			 , 0 			as time_detail_no
+			 , ''			as movie_name
+			 , '' 			as room_name
+			 , '' 			as time_name
+			 , substr(td.show_date,1,4) || '-' || substr(td.show_date,5,2) || '-' || substr(td.show_date,7,2) as show_date
+			 , '' 			as start_time
+			 , '' 			as end_time
+			 , null			as start_date
+			 , null			as end_date
+			 , td.total_seat 		as total_seat
+			 , td.reserved_seat	as reserved_seat 
+			 , 0			as adult_amt
+			 , 0			as child_amt
+		from   timetable_detail td
+		where  td.time_no in (select time_no from timetable_master where movie_no = #{movie_no} ) 
+		and    show_date >= to_char(sysdate,'YYYYMMDD')
+		order by movie_no
+		</select>
+
+		<select id="timeRoomData" resultMap="roomRes">
+			select room_no, room_name from room
+		</select>
+		
+		<select id="timeSeatData" resultMap="seatRes" parameterType="seatModel">
+			select 	s.seat_no,
+					s.room_no,
+					s.seat_name,
+					s.seat_position,
+					NVL(rd2.seat_no, -1) as reserved
+			   from seat s,
+					(select rd.*
+					from  reserve_detail rd, reserve_master rm
+					where rd.reserve_no = rm.reserve_master_no
+					and   time_detail_no = #{seat_no}
+					and	  rm.cancel = 'N') rd2
+			   where s.seat_no = rd2.seat_no(+)
+			   and 	 s.room_no = #{room_no}
+			   order by s.seat_no
+		</select>
+		
+		<select id="timeDetailOne" resultMap="timeDetailRes" parameterType="int">
+				select time_detail_no,
+					   time_no,
+					   time_name,
+					   show_date,
+					   start_time, end_time,
+					   adult_amt, child_amt,
+					   total_seat, reserved_seat
+				from   timetable_detail
+				where  time_detail_no = #{time_detail_no}
+		</select>
+		
+		<select id="getReserveDetailNo" resultType="String">
+				select  to_char(sysdate, 'YYYYMMDD') || NVL(max (substr(reserve_master_no,9 ,6 ) ) , '000000' )
+				from 	reserve_master
+				where 	reserve_master_no like to_char(sysdate, 'YYYYMMDD') || '%'
+		</select>
+		
+		<!-- 인설트  -->
+		<insert id="reserveMasterInsert" parameterType="reserveMasterModel">
+			insert into reserve_master
+			(reserve_master_no, member_no, time_detail_no,
+			adult, child, total_amount, reg_date, cancel)
+			values
+			(#{reserve_master_no}, #{member_no}, #{time_detail_no},
+			 #{adult}, #{child}, #{total_amount}, sysdate, 'N' )
+		</insert>
+		
+		<insert id="reserveDetailInsert" parameterType="reserveDetailModel">
+			insert into reserve_detail
+				(reserve_detail_no, reserve_no, seat_no)
+			values
+				(reserve_detail_no_seq.nextval, #{reserve_no}, #{seat_no})
+		</insert>
+		
+		<!-- 업데이트 -->
+		<update id="timeDetailSeatUpdate" parameterType="int">
+			update timetable_detail
+			set	   reserved_seat = reserved_seat + 1
+			where  time_detail_no = #{time_detail_no}
+		</update>
+		
+		<update id="torrentcoinUpdate" parameterType="memberModelR">
+			update member
+			set	   mticket_coin = mticket_coin + #{mticket_coin}
+			where  member_no = #{member_no}
+		</update>
+</mapper>

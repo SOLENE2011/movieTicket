@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<!-- Main Page -->
+	<definition name="main" template="/WEB-INF/views/common/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/common/container.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	
+	<!-- Member -->
+	<definition name="member" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/joinStep1.jsp" />
+	</definition>
+	<definition name="memberInfo" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/joinStep2.jsp" />
+	</definition>
+	<definition name="memberEnd" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/joinStep3.jsp" />
+	</definition>
+	<definition name="loginForm" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp" />
+	</definition>
+	<!-- 우편번호찾기 -->
+	<definition name="zipCheck" template="/WEB-INF/views/member/zipCk.jsp"></definition>
+	<definition name="memberwith" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/withdraw.jsp" />
+	</definition>
+	<definition name="idFind" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/idFind.jsp" />
+	</definition>
+	<definition name="idFindOk" extends="main">
+		<put-attribute name="header" value="/WEB-INF/views/member/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/member/idFindOK.jsp" />
+	</definition>
+	
+	<!-- Admin -->
+	<definition name="adminMain" template="/WEB-INF/views/common/adminLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/adminHeader.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/movie/movieList.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	<definition name="adminMemberList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminMemberList.jsp"/>
+	</definition>
+	<definition name="timeTableList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/timeTableList.jsp" />
+	</definition>
+	
+	<!-- admin_event -->
+	<definition name="adminEventList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminEventList.jsp"/>
+	</definition>
+	<definition name="adminEventWrite" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminEventWrite.jsp"/>
+	</definition>
+	<definition name="adminEventView" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminEventView.jsp"/>
+	</definition>
+	<definition name="adminEventUpdate" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminEventUpdate.jsp"/>
+	</definition>
+	
+	<!-- admin_notice -->
+	<definition name="adminNoticeList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminNoticeList.jsp" />
+	</definition>
+	<definition name="adminNoticeForm" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminNoticeForm.jsp" />
+	</definition>
+	<definition name="adminNoticeView" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminNoticeView.jsp" />
+	</definition>
+	<definition name="adminNoticeModify" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminNoticeModify.jsp" />
+	</definition>
+	
+	<!-- admin_magazine -->
+	<definition name="adminMagazineList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminMagazineList.jsp"/>
+	</definition>
+	<definition name="adminMagazineWrite" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminMagazineWrite.jsp"/>
+	</definition>
+	<definition name="adminMagazineView" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminMagazineView.jsp"/>
+	</definition>
+	<definition name="adminMagazineUpdate" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminMagazineUpdate.jsp"/>
+	</definition>
+	
+	<!-- admin_qna -->
+	<definition name="adminQnaList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaList.jsp" />
+	</definition>
+	<definition name="adminQnaWrite" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaWrite.jsp" />
+	</definition>
+	<definition name="adminQnaView" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaView.jsp" />
+	</definition>
+	<definition name="adminQnaDelete" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaDelete.jsp" />
+	</definition>
+	<definition name="adminQnaModify" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaModify.jsp" />
+	</definition>
+	<definition name="adminQnaReply" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/adminQnaReply.jsp" />
+	</definition>
+	
+	<!-- Movie -->
+	<definition name="adminMovieList" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/movieList.jsp"></put-attribute>
+	</definition>
+	<definition name="adminMovieView" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/movieView.jsp"></put-attribute>
+	</definition>
+	<definition name="adminMovieUpdate" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/movieUpdate.jsp"></put-attribute>
+	</definition>
+	<definition name="movieWrite" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/admin/movieWrite.jsp"></put-attribute>
+	</definition>
+	<definition name="movieList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/movie/movieList.jsp"></put-attribute>
+	</definition>
+	<definition name="movieView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/movie/movieView.jsp"></put-attribute>
+	</definition>
+	
+	<!-- Reserve -->
+	<definition name="reserveMain" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/reserve/reserveMain.jsp" />
+	</definition>
+	
+	<!-- Magazine -->
+	<definition name="magazineList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/magazine/magazineList.jsp"/>
+	</definition>
+	<definition name="magazineView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/magazine/magazineView.jsp"/>
+	</definition>
+	
+	<definition name="magazineWrite" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/magazine/magazineWrite.jsp"/>
+	</definition>
+	<definition name="magazineUpdate" extends="adminMain">
+		<put-attribute name="body" value="/WEB-INF/views/magazine/magazineUpdate.jsp"/>
+	</definition>
+	<definition name="commentCheck" template="/WEB-INF/views/magazine/commentCheck.jsp"></definition>
+	
+	<!-- Event -->
+	<definition name="eventList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/event/eventList.jsp"/>
+	</definition>
+	<definition name="eventView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/event/eventView.jsp"/>
+	</definition>
+	
+	<!-- QnA -->
+	<definition name="qnaList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaList.jsp" />
+	</definition>
+	<definition name="qnaWrite" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaWrite.jsp" />
+	</definition>
+	<definition name="qnaView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaView.jsp" />
+	</definition>
+	<definition name="qnaDelete" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaDelete.jsp" />
+	</definition>
+	<definition name="qnaModify" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaModify.jsp" />
+	</definition>
+	<definition name="qnaReply" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaReply.jsp" />
+	</definition>
+   
+	<!-- Notice -->
+	<definition name="noticeList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/notice/noticeList.jsp" />
+	</definition>
+	<definition name="noticeView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/notice/noticeView.jsp" />
+	</definition>
+	
+	<!-- Mypage -->
+	<definition name="memberModify" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberModify.jsp" />
+	</definition>
+	<definition name="mcoinPage" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/mcoinPage.jsp" />
+	</definition>
+	<definition name="reserveList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/reserveList.jsp"/>
+	</definition>
+	<definition name="cancelList" extends="main">
+	   <put-attribute name="body" value="/WEB-INF/views/mypage/cancelList.jsp"/>
+	</definition>
+	<definition name="wishList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/wishList.jsp"/>
+	</definition>
+	<definition name="wishView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/wishView.jsp" />
+	</definition>
+	<definition name="reserveView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/mypage/reserveView.jsp" />
+	</definition>
+	
+	
+	<!-- Free -->
+	<definition name="freeboardList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/free/freeboardList.jsp" />
+	</definition>
+	<definition name="freeboardWrite" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/free/freeboardWrite.jsp" />
+	</definition>
+	<definition name="freeboardView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/free/freeboardView.jsp" />
+	</definition>
+	
+	<!-- Common -->
+	<definition name="accessterms" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/common/accessterms.jsp" />
+	</definition>
+	<definition name="privacy" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/common/privacy.jsp" />
+	</definition>
+	
+</tiles-definitions>

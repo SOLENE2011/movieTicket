@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<resultMap type="timeTableListModel" id="timeListRes">
+		<result property="time_no" column="time_no"/>
+		<result property="movie_no" column="movie_no" />
+		<result property="movie_name" column="movie_name" />
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date"/>
+		<result property="room_name" column="room_name" />
+		<result property="show_date" column="show_date"/>
+		<result property="start_time" column="start_time"/>
+		<result property="end_time" column="end_time"/>
+		<result property="reserved_seat" column="reserved_seat" />
+		<result property="total_seat" column="total_seat" />
+		<result property="adult_amt" column="adult_amt" /> 
+		<result property="child_amt" column="child_amt "/>  
+	</resultMap>
+	
+	<resultMap type="timetableMasterModel" id="timeMasterRes">
+		<result property="time_no" column="time_no" />
+		<result property="movie_no" column="movie_no" /> 
+		<result property="room_no" column="room_no" />
+		<result property="start_date" column="start_date" /> 
+		<result property="end_date" column="end_date" />
+		<result property="reg_date" column="reg_date" />
+	</resultMap>
+	
+	<resultMap type="timetableDetailModel" id="timeDetailRes">
+		<result property="time_detail_no" column="time_detail_no" /> 
+		<result property="time_no" column="time_no" />
+		<result property="adult_amt" column="adult_amt" /> 
+		<result property="child_amt" column="child_amt" />
+		<result property="total_seat" column="total_seat" />
+		<result property="reserved_seat" column="reserved_seat" />
+		<result property="time_name" column="time_name" /> 
+		<result property="show_date" column="show_date" />
+		<result property="start_time" column="start_time" /> 
+		<result property="end_time" column="end_time" />
+	</resultMap>
+	
+	<resultMap type="roomModel" id="roomRes">
+		<result property="room_no" column="room_no" />
+		<result property="room_name" column="room_name" />
+	</resultMap>
+	
+	<resultMap type="memberModel" id="memberRes">
+		<result property="member_no" column="member_no" />
+		<result property="id" column="id" />
+		<result property="passwd" column="passwd" />
+		<result property="name" column="name" />
+		<result property="jumin1" column="jumin1" />
+		<result property="jumin2" column="jumin2" />
+		<result property="zipcode" column="zipcode" />
+		<result property="addr1" column="addr1" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="mticket_coin" column="mticket_coin" />
+		<result property="reg_date" column="reg_date" />
+		<result property="mod_date" column="mod_date" />
+		<result property="grade" column="grade" />
+	</resultMap>
+	
+	<resultMap type="adminModel" id="adminModelRes">
+		<result property="movie_no" column="movie_no" />
+		<result property="movie_name" column="movie_name" />
+		<result property="director" column="director" />
+		<result property="actor" column="actor" />
+		<result property="show_date" column="show_date" />
+		<result property="story" column="story" />
+		<result property="poster" column="poster" />
+		<result property="cut1" column="cut1" />
+		<result property="cut2" column="cut2" />
+		<result property="cut3" column="cut3" />
+		<result property="reg_date" column="reg_date" />
+		<result property="summary" column="summary" />
+		<result property="movie_age_grade" column="movie_delete" />
+		<result property="movie_score" column="movie_score" />
+		<result property="movie_score_people" column="movie_score_people" />
+	</resultMap>
+	
+	<!-- timeTable 리스트 -->
+	<select id="timeTableList" resultMap="timeListRes">
+		select tm.time_no
+     		 , tm.movie_no
+     		 , m.movie_name
+		     , tm.start_date
+		     , tm.end_date
+		     , r.room_name
+         , td.time_detail_no
+		     , td.show_date
+		     , td.start_time
+		     , td.end_time
+		     , td.reserved_seat
+		     , td.total_seat
+		     , td.adult_amt
+		     , td.child_amt
+		     from movie m, timetable_detail td, timetable_master tm, room r
+		     where m.movie_no = tm.movie_no 
+		     and tm.room_no = r.room_no
+		     and tm.time_no = td.time_no
+		     order by tm.time_no desc
+	</select>
+	
+	<insert id="timeMasterInsert" parameterType="timetableMasterModel">
+		insert into TIMETABLE_MASTER ( time_no, movie_no, room_no, start_date, end_date, reg_date)
+		values (TIMETABLE_MASTER_NO_SEQ.nextval, #{movie_no}, #{room_no}, #{start_date}, #{end_date}, sysdate)
+	</insert>
+	
+	<insert id="timeDetailInsert" parameterType="timetableDetailModel" useGeneratedKeys="true" keyProperty="time_no">
+		<selectKey keyProperty="time_no" resultType="int" order="BEFORE">
+			select TIMETABLE_MASTER_NO_SEQ.currval from dual
+		</selectKey>
+		insert into TIMETABLE_DETAIL (time_detail_no, time_no, time_name, show_date, start_time, end_time, adult_amt, child_amt, total_seat, reserved_seat)
+		values (TIMETABLE_DETAIL_NO_SEQ.nextval, #{time_no}, #{time_name}, #{show_date}, #{start_time}, #{end_time}, #{adult_amt}, #{child_amt}, '20', '0')
+	</insert>
+	
+	<delete id="timeMasterDelete" parameterType="String">
+		delete from TIMETABLE_MASTER 
+		where time_no = #{time_no}
+	</delete>
+	
+	<delete id="timeDetailDelete" parameterType="String">
+		delete from TIMETABLE_DETAIL 
+		where time_detail_no = #{time_detail_no}
+	</delete>
+	
+	<!-- 영화이름,번호 리스트 뽑아오기 -->
+	<select id="timeMovie" resultMap="adminModelRes">
+		select movie_name , movie_no from MOVIE 
+		order by movie_no desc
+	</select>
+	
+	<select id="timeRoom" resultMap="roomRes">
+		select * from ROOM
+	</select>
+	
+	<select id="getMovieSEQ" resultType="int">
+		select movie_no_seq.nextval from dual
+	</select>
+	
+	<!-- 회원 검색 -->
+	<select id="memberSearch0" resultMap="memberRes" parameterType="String">
+		select * from MEMBER 
+		where id like #{search} 
+		order by member_no desc
+	</select>
+	
+	<select id="memberSearch1" resultMap="memberRes" parameterType="String">
+		select * from MEMBER 
+		where name like #{search} 
+		order by member_no desc
+	</select>
+	
+	<select id="memberSearch2" resultMap="memberRes" parameterType="String">
+		select * from MEMBER 
+		where email like #{search} 
+		order by member_no desc
+	</select>
+</mapper>

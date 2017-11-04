@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>M-Ticket</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="../../css/import.css" />
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="logo">
+			<h1><a href="../index.html">M-Ticket</a></h1>
+		</div>
+		<div class="util_menu">
+			<div class="inner">
+				<ul>
+					<li><a href="../member/member_01.html">회원가입</a></li>
+					<li><a href="#none">아이디찾기</a></li>
+					<li><a href="#none">비밀번호찾기</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="gnb">
+			<ul>
+				<li><a href="#none">예매</a></li>
+				<li><a href="#none">상영작</a></li>
+				<li><a href="#none">매거진</a></li>
+			</ul>
+		</div>
+	</div><!-- // header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="terms_grp">
+			<div class="terms_list">
+				<ul>
+					<li><a href="notice.html">공지사항</a></li>
+					<li class="on"><a href="faq.html">FAQ</a></li>
+					<li><a href="terms_01.html">이용약관</a></li>
+					<li><a href="terms_02.html">개인정보취급방침</a></li>
+				</ul>
+			</div>
+			<div class="terms_ct">
+				<form action="#none" method="post">
+					<div class="tbl_type_01">
+						<table>
+							<caption>번호,제목,글쓴이,날짜,조회를 나타내는 faq 표</caption>
+							<colgroup>
+								<col style="width:120px;" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th scope="row">글쓴이</th>
+									<td><input type="text" class="txt w100" value="김형섭" /></td>
+								</tr>
+								<tr>
+									<th scope="row">제목</th>
+									<td><input type="text" class="txt" value="제목입니다." /></td>
+								</tr>
+								<tr>
+									<th scope="row">내용</th>
+									<td>
+										<div class="textarea_grp">
+											<textarea name="">내용입니다.</textarea>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="btn_type_03">
+						<a href="faq_view.html" class="btn btnC_03 btnP_04 mr10">
+							<span>취소</span>
+						</a>
+						<span class="btn btnC_04 btnP_04">
+							<input type="submit" value="수정" />
+						</span>
+					</div>
+				</form>
+			</div>
+
+			<!-- paging -->
+			<div class="paging">
+				<a href="#none" class="page prv">&lt;</a>
+				<strong>1</strong>
+				<a href="#none" class="page">2</a>
+				<a href="#none" class="page">3</a>
+				<a href="#none" class="page">4</a>
+				<a href="#none" class="page">5</a>
+				<a href="#none" class="page next">&gt;</a>
+			</div><!-- // paging -->
+
+		</div>
+	</div><!-- // container -->
+
+	<!-- footer -->
+	<div id="footer">
+		<div class="ft_ct">
+			<div class="inner">
+				<h1>M-Ticket</h1>
+				<div class="ft_list">
+					<ul>
+						<li><a href="#none">공지사항</a></li>
+						<li><a href="#none">FAQ</a></li>
+						<li><a href="#none">이용약관</a></li>
+						<li><a href="#none">개인정보취급방침</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="address">
+				<p>강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F  |  강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 5F, 7F  |  종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F 이태원지원 : 서울특별시 용산구 보광로 73 한국폴리텍제1대학  |  울산지원 : 울산광역시 남구 신정2동 1640-6번지 현대스포츠센터2F</p>
+				<p class="copy">COPYRIGHT© LOTTE CINEMA ALL RIGHT RESERVED.</p>
+			</div>
+		</div>
+	</div><!-- // footer -->
+</div>
+</body>
+</html>

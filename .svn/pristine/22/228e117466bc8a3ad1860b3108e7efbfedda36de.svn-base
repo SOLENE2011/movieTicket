@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>M-Ticket</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="../../css/import.css" />
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="logo">
+			<h1><a href="../index.html">M-Ticket</a></h1>
+		</div>
+		<div class="util_menu">
+			<div class="inner">
+				<ul>
+					<li><a href="../member/member_01.html">회원가입</a></li>
+					<li><a href="#none">아이디찾기</a></li>
+					<li><a href="#none">비밀번호찾기</a></li>
+					<li><a href="#none">고객센터</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="gnb">
+			<ul>
+				<li><a href="#none">예매</a></li>
+				<li><a href="#none">상영작</a></li>
+				<li><a href="#none">매거진</a></li>
+			</ul>
+		</div>
+	</div><!-- // header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="mypage_grp">
+			<div class="mypage_list">
+				<ul>
+					<li><a href="mypage.html">회원정보수정</a></li>
+					<li class="on"><a href="my_reserve.html">영화예매&#47;취소내역</a></li>
+					<li><a href="my_coin.html">M_COIN</a></li>
+				</ul>
+			</div>
+			<div class="mypage_ct">
+				<h3 class="sub_tit">예매내역</h3>
+				<div class="tbl_type_02">
+					<table>
+						<caption>번호,제목,글쓴이,날짜,조회를 나타내는 공지사항 표</caption>
+						<colgroup>
+							<col />
+							<col style="width:25%" />
+							<col style="width:10%" />
+							<col style="width:15%" />
+							<col style="width:8%" />
+							<col style="width:15%" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">예매번호</th>
+								<th scope="col">영화명</th>
+								<th scope="col">영화관</th>
+								<th scope="col">상영일시</th>
+								<th scope="col">예매일</th>
+								<th scope="col">상태</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2015040500001</td>
+								<td>배트맨 대 슈퍼맨</td>
+								<td>economy</td>
+								<td>20160405 180000</td>
+								<td>15.05.17</td>
+								<td>예약완료
+									<span class="ibk">
+										<a href="#none" class="btn btnC_04 btnP_03">
+											<span>취소</span>
+										</a>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>2015040500001</td>
+								<td>배트맨 대 슈퍼맨</td>
+								<td>economy</td>
+								<td>20160405 180000</td>
+								<td>15.05.17</td>
+								<td>예약완료
+									<span class="ibk">
+										<a href="#none" class="btn btnC_04 btnP_03">
+											<span>취소</span>
+										</a>
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h3 class="sub_tit mt30">취소내역</h3>
+				<div class="tbl_type_02">
+					<table>
+						<caption>번호,제목,글쓴이,날짜,조회를 나타내는 공지사항 표</caption>
+						<colgroup>
+							<col />
+							<col style="width:25%" />
+							<col style="width:10%" />
+							<col style="width:15%" />
+							<col style="width:8%" />
+							<col style="width:15%" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">예매번호</th>
+								<th scope="col">영화명</th>
+								<th scope="col">영화관</th>
+								<th scope="col">상영일시</th>
+								<th scope="col">예매일</th>
+								<th scope="col">취소신청일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2015040500001</td>
+								<td>배트맨 대 슈퍼맨</td>
+								<td>economy</td>
+								<td>20160405 180000</td>
+								<td>15.05.17</td>
+								<td>15.05.18</td>
+							</tr>
+							<tr>
+								<td>2015040500001</td>
+								<td>배트맨 대 슈퍼맨</td>
+								<td>economy</td>
+								<td>20160405 180000</td>
+								<td>15.05.17</td>
+								<td>15.05.18</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div><!-- // container -->
+
+	<!-- footer -->
+	<div id="footer">
+		<div class="ft_ct">
+			<div class="inner">
+				<h1>M-Ticket</h1>
+				<div class="ft_list">
+					<ul>
+						<li><a href="#none">공지사항</a></li>
+						<li><a href="#none">FAQ</a></li>
+						<li><a href="#none">이용약관</a></li>
+						<li><a href="#none">개인정보취급방침</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="address">
+				<p>강남지원 1관 : 서울특별시 강남구 역삼동 823-24 남도빌딩 2F, 3F  |  강남지원 2관 : 서울특별시 강남구 역삼동 823-42 그랑프리 빌딩 5F, 7F  |  종로지원 : 서울특별시 중구 남대문로 120 대일빌딩 2F 이태원지원 : 서울특별시 용산구 보광로 73 한국폴리텍제1대학  |  울산지원 : 울산광역시 남구 신정2동 1640-6번지 현대스포츠센터2F</p>
+				<p class="copy">COPYRIGHT© LOTTE CINEMA ALL RIGHT RESERVED.</p>
+			</div>
+		</div>
+	</div><!-- // footer -->
+</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+
+	<resultMap type="noticeModel" id="noticeModelRes">
+		<result property="no" column="no" />
+		<result property="name" column="name" />
+		<result property="subject" column="subject" />
+		<result property="contents" column="contents" />
+		<result property="regdate" column="regdate" />
+		<result property="readhit" column="readhit" />
+	</resultMap>
+	<!-- NoticeCommentModel -->
+	<resultMap type="ncModel" id="ncRes">
+		<result property="noticecomment_no" column="noticecomment_no"/>
+		<result property="notice_no" column="notice_no"/>
+		<result property="name" column="name"/>
+		<result property="reg_date" column="reg_date"/>
+		<result property="contents" column="contents"/>
+	</resultMap>
+	<!-- 공통 select -->
+	<sql id="select_all">
+		select * from NOTICEBOARD
+	</sql>
+
+	<select id="selectAll" parameterType="int" resultMap="noticeModelRes">
+		<include refid="select_all" />
+	</select>
+
+	<!-- 글목록 -->
+	<select id="noticeList" resultMap="noticeModelRes">
+		<include refid="select_all" />
+		order by no desc
+	</select>
+
+	<!-- 글쓰기 -->
+	<insert id="noticeWrite" parameterType="noticeModel">
+		INSERT INTO NOTICEBOARD
+		(NO, SUBJECT, CONTENTS, REGDATE, NAME)
+		VALUES
+		(NOTICEBOARD_NO_SEQ.NEXTVAL, #{subject}, #{contents}, SYSDATE,
+		#{name})
+	</insert>
+
+	<!-- 조회수 1증가 -->
+	<update id="noticeUpdateReadhit" parameterType="Integer">
+		UPDATE
+		NOTICEBOARD
+		SET
+		READHIT = READHIT + 1
+		WHERE
+		NO = #{NO}
+	</update>
+
+	<!-- 글 상세보기 -->
+	<select id="noticeView" resultMap="noticeModelRes"
+		parameterType="noticeModel">
+		<include refid="select_all" />
+		where no = #{no}
+	</select>
+	<!-- 글수정 -->
+	<update id="noticeModify">
+		update NOTICEBOARD set subject=#{subject},
+		contents=#{contents},
+		regdate=#{regdate}
+		where no = #{no}
+	</update>
+	<!-- 글 삭제 -->
+	<update id="noticeDelete" parameterType="noticeModel">
+		delete NOTICEBOARD where
+		no = #{no}
+	</update>
+	<!-- 검색 -->
+	<select id="noticeSearch0" resultMap="noticeModelRes"
+		parameterType="String">
+		select * from NOTICEBOARD where subject like #{search}
+		order by no desc
+	</select>
+	<!-- 검색인데 content부분은 스마트에디터에서는 어떻게 작용할지? -->
+	<select id="noticeSearch1" resultMap="noticeModelRes"
+		parameterType="String">
+		select * from NOTICEBOARD where contents like #{search}
+		order by no desc
+	</select>
+	<!-- 공지사항롤링 -->
+	<select id="selectOne-f" resultMap="noticeModelRes"	parameterType="int">
+	<![CDATA[
+		select * from ( select no, subject,name,contents,readhit,regdate from NOTICEBOARD order by regdate desc ) where rownum <= 5
+		]]>
+	</select>
+		<!-- 코멘트 전체 꺼내오기 -->
+	<select id="noticecommentList" resultMap="ncRes" parameterType="ncModel">
+		select * from notice_comment 
+				where notice_no = #{notice_no}
+			    order by noticecomment_no desc
+	</select>
+	<!-- 코멘트 전체 개수 -->
+	<select id="cmtcount" parameterType="int" resultType="int">
+		select count (*) as cmtcount from notice_comment where notice_no = #{notice_no}
+	</select>
+	 	<!-- 코멘트 삭제 -->
+	<update id="noticedeletecomment" parameterType="ncModel">
+		update notice_comment set where noticecomment_no=#{noticecomment_no} 
+			
+   	</update>
+     
+ 		<!-- insert 쿼리문 정의 -->
+ 		<!-- 코멘트 작성 -->
+ 	<insert id="noticewritecomment" parameterType="ncModel">
+		insert into notice_comment (noticecomment_no,
+      					        notice_no,
+                         		name,                         		
+                         		reg_date,
+                         		contents,    		
+                         )
+                values (
+                noticecomment_no.nextval,
+                	 	#{notice_no},
+                	 	#{name,                	 	
+                        reg_date,
+                        #{contents}
+                         )
+	</insert>
+	
+
+
+
+</mapper>

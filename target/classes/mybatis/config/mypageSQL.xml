@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mypage">
+
+	<!-- 리절트맴 정의시작! -->
+	<resultMap id="reservelistRes" type="reserveListModel">
+	  	<result property="reserve_master_no" column="reserve_master_no"/>
+	  	<result property="movie_name" column="movie_name"/>
+	  	<result property="room_name" column="room_name"/>
+	  	<result property="show_date" column="show_date"/>	
+	  	<result property="start_time" column="start_time"/>	  	
+	  	<result property="reg_date" column="reg_date"/>
+	  	<result property="cancel" column="cancel"/>
+	  	<result property="cancel_date" column="cancel_date"/>
+	</resultMap>
+	
+	<resultMap id="reservelistRes2" type="reserveListModel2">
+	  	<result property="reserve_master_no" column="reserve_master_no"/>
+	  	<result property="movie_name" column="movie_name"/>
+	  	<result property="room_name" column="room_name"/>
+	  	<result property="show_date" column="show_date"/>	
+	  	<result property="start_time" column="start_time"/>	  	
+	  	<result property="reg_date" column="reg_date"/>
+	  	<result property="cancel" column="cancel"/>
+	  	<result property="cancel_date" column="cancel_date"/>
+	  	<result property="adult" column="adult"/>
+	  	<result property="child" column="child"/>
+	  	<result property="total_amount" column="total_amount"/>
+	  	<result property="member_no" column="member_no"/>
+	</resultMap>
+	
+	<resultMap id="reserveListRes_ACT" type="reserveListModel_ACT">
+		<result property="reserve_master_no" column="reserve_master_no"/>
+		<result property="adult" column="adult"/>
+		<result property="child" column="child"/>
+		<result property="total_amount" column="total_amount"/>
+	</resultMap>
+	
+	<!-- M_COIN resultMap -->
+	<resultMap type="memberModelRR" id="memberModel">
+		<result property="member_no" column="member_no"/>
+		<result property="mticket_coin" column="mticket_coin"/>
+		<result property="adult_ticket" column="adult_ticket"></result>
+		<result property="child_ticket" column="child_ticket"></result>
+	</resultMap>
+	
+	<!-- 보고싶은 영화 -->
+  	<resultMap id="wishlistRes" type="wishListModel">
+  		<result property="movie_no" column="movie_no" />
+	  	<result property="member_no" column="member_no"/> 	
+	  	<result property="movie_name" column="movie_name"/>
+	  	<result property="director" column="director"/>
+	  	<result property="actor" column="actor"/>
+	  	<result property="summary" column="summary"/>
+	  	<result property="show_date" column="show_date"/>
+	  	<result property="story" column="story"/>
+	  	<result property="poster" column="poster"/>
+	  	<result property="reg_date" column="reg_date"/>
+	  	<result property="cut1" column="cut1"/>
+	  	<result property="cut2" column="cut2"/>
+	  	<result property="cut3" column="cut3"/>
+	</resultMap>
+	
+	<resultMap type="wishListModel2" id="wishlistRes2">
+		<result property="wishlist_no" column="wishlist_no"/>
+		<result property="movie_no" column="movie_no" />
+	  	<result property="member_no" column="member_no"/> 	
+	</resultMap>
+
+	<!-- 리절트맴 정의 끝! -->
+	
+	<!-- 보고싶은 영화 추가 -->
+	<insert id="addWishlist" parameterType="wishListModel">
+		INSERT INTO wishlist(wishlist_no, member_no, movie_no) VALUES (WISHLIST_NO_SEQ.NEXTVAL, #{member_no}, #{movie_no})
+	</insert>
+	
+	<!-- M_COIN -->
+	<select id="memberOne" resultMap="memberModel">
+		select member_no, mticket_coin, adult_ticket, child_ticket from MEMBER
+		where member_no = #{member_no}
+	</select>
+	
+	<update id="updateMticketPage" parameterType="memberModelRR">
+		update MEMBER
+		set mticket_coin = mticket_coin - #{mticket_coin},
+			adult_ticket = adult_ticket + #{adult_ticket},
+			child_ticket = child_ticket + #{child_ticket}
+		where member_no = #{member_no}
+	</update>
+	
+	<!-- 예매내역 -->
+	<select id="mypageA" resultMap="reservelistRes"  parameterType="int">
+		SELECT rm.reserve_master_no
+			, m.movie_name
+			, r.room_name
+			, td.show_date || ' ' || td.start_time as show_date 
+			, rm.reg_date as reg_date
+			, nvl(rm.cancel,'N') as cancel
+			, cancel_date
+		FROM reserve_master rm
+			, movie	m
+			, room r
+			, timetable_master tm
+			, timetable_detail td
+		WHERE tm.movie_no = m.movie_no
+			and tm.time_no = td.time_detail_no
+			and tm.room_no = r.room_no
+			and rm.time_detail_no = td.time_detail_no
+			and rm.member_no = #{session_member_no}
+			and nvl(rm.cancel,'N')='N'
+		ORDER BY rm.reserve_master_no DESC
+	</select>
+	
+	<!-- 취소내역 -->
+	<select id="mypageCancel" resultMap="reservelistRes"  parameterType="int">
+		SELECT rm.reserve_master_no
+			, m.movie_name
+			, r.room_name
+			, td.show_date || ' ' || td.start_time as show_date 
+			, rm.reg_date as reg_date
+			, cancel
+			, cancel_date
+		FROM reserve_master rm
+			, movie					m
+			, room						r
+			, timetable_master tm
+			, timetable_detail td
+		WHERE tm.movie_no = m.movie_no
+			and tm.time_no = td.time_no
+			and tm.room_no = r.room_no
+			and rm.time_detail_no = td.time_detail_no
+			and rm.member_no = #{session_member_no}
+			and rm.cancel = 'Y'
+		ORDER BY rm.cancel_date DESC
+	</select>
+	
+	<!-- 예매취소 -->
+	<update id="updatemypage" parameterType="reserveListModel">
+   		UPDATE reserve_master
+   		SET cancel='Y', cancel_date = sysdate
+   		where reserve_master_no = #{reserve_master_no} 	     
+   	               
+	</update>
+	
+	<update id="updatemypage2" parameterType="reserveListModel">
+		UPDATE timetable_detail td
+		SET    reserved_seat = NVL( (select sum(adult + child) 
+					from reserve_master rm 
+					where td.time_detail_no=rm.time_detail_no 
+					and   NVL(rm.cancel,'N')='N' ) , 0)
+		WHERE  time_detail_no in (select time_detail_no from reserve_master where  reserve_master_no = #{reserve_master_no} )
+	</update>
+
+
+	<!-- 보고싶은 영화 -->
+	<select id="selectWishlist" resultMap="wishlistRes">
+		SELECT wl.member_no
+			, wl.movie_no
+			, m.movie_name
+			, m.director
+			, m.actor
+			, m.summary
+			, m.show_date
+			, m.story
+			, m.poster
+			, m.cut1
+			, m.cut2
+			, m.cut3
+		FROM wishlist	wl
+			, movie		m	
+		WHERE wl.member_no = #{session_member_no} AND wl.movie_no = m.movie_no 
+		ORDER BY wl.movie_no DESC
+	</select>
+	
+	<select id="selectWishlistCheck" resultMap="wishlistRes2" parameterType="wishListModel2">
+		select * from WISHLIST where MEMBER_NO = #{member_no} AND MOVIE_NO = #{movie_no}
+	</select>
+	
+	<!-- 예매 상세보기 -->
+	<select id="selectReserveView" resultMap="reservelistRes2" parameterType="reserveListModel2">
+		SELECT rm.reserve_master_no
+			, m.movie_name
+			, r.room_name
+			, td.show_date || ' ' || td.start_time as show_date 
+			, rm.reg_date as reg_date
+			, nvl(rm.cancel,'N') as cancel
+			, cancel_date
+		FROM reserve_master rm
+			, movie	m
+			, room r
+			, timetable_master tm
+			, timetable_detail td
+		WHERE tm.movie_no = m.movie_no
+			and tm.time_no = td.time_detail_no
+			and tm.room_no = r.room_no
+			and rm.time_detail_no = td.time_detail_no
+			and rm.member_no = #{member_no}
+			and nvl(rm.cancel,'N')='N'
+			and reserve_master_no = #{reserve_master_no}
+		ORDER BY rm.reserve_master_no DESC
+	</select>
+	
+	<!-- 어른 아이수, 총가격 가져오기 -->
+	<select id="reserveList_ACT" resultMap="reserveListRes_ACT" parameterType="Long">
+		select reserve_master_no, adult, child, total_amount from reserve_master where reserve_master_no = #{no}
+	</select>
+	
+	<!-- 보고싶은 영화 삭제 -->
+	<delete id="deleteWishlist" parameterType="wishListModel">
+		DELETE FROM wishlist WHERE member_no = #{member_no} AND movie_no = #{movie_no}
+	</delete>
+</mapper>
